@@ -1,14 +1,77 @@
 import 'package:flutter/material.dart';
 import 'package:tipiko_app_usr/animation/RotationRoute.dart';
 import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
+import 'package:tipiko_app_usr/data/product.dart';
+import 'package:tipiko_app_usr/pages/food_details_page.dart';
 //import 'package:tipiko_app_usr/pages/FoodDetailsPage.dart';
 
 class PopularFoodsWidget extends StatefulWidget {
+
+  Future<List<Product>>? products;
+
+  late final ScrollController scrollController ;
+
+  PopularFoodsWidget( this.products, this.scrollController );
+
+
+
   @override
   _PopularFoodsWidgetState createState() => _PopularFoodsWidgetState();
 }
 
 class _PopularFoodsWidgetState extends State<PopularFoodsWidget> {
+
+
+
+  list() {
+    return  FutureBuilder<List>(
+      future: widget.products,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+
+          return Text("Espere");
+        }
+        if (snapshot.hasData) {
+          return dataTable(List<Product>.from(snapshot.data!)   );
+        }
+
+
+        return Text("Espere");
+      },
+    );
+  }
+  SingleChildScrollView dataTable(List<Product> products) {
+    return SingleChildScrollView(
+      child: Container(
+        height: double.maxFinite,
+        child:  ListView.builder(shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              print('$index');
+              return  PopularFoodTiles(name: products[index].nombreProducto, imageUrl: products[index].urlImagenProducto, rating: "",
+                  numberOfRating: "",
+                  price: "",
+                  slug: "",
+                product: products[index]
+              );
+
+
+
+            }),),
+
+
+
+
+      controller: widget.scrollController,
+
+    );
+  }
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,7 +81,16 @@ class _PopularFoodsWidgetState extends State<PopularFoodsWidget> {
         children: <Widget>[
           PopularFoodTitle(),
           Expanded(
-            child: PopularFoodItems(),
+            child: Container(
+              height: 100,
+              child:ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  list(),
+
+                ],
+              ),
+            ) ,
           )
         ],
       ),
@@ -33,6 +105,7 @@ class PopularFoodTiles extends StatelessWidget {
   String numberOfRating;
   String price;
   String slug;
+  Product product;
 
   PopularFoodTiles(
       {
@@ -41,37 +114,40 @@ class PopularFoodTiles extends StatelessWidget {
        required this.rating,
        required this.numberOfRating,
        required this.price,
-       required this.slug})
+       required this.slug,
+
+        required this.product})
        ;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
-       // Navigator.push(context, ScaleRoute(page: FoodDetailsPage()));
+        print('aaaaaaaaaaaaa');
+         Navigator.push(context, ScaleRoute(page: FoodDetailsPage( product : product  )));
       },
       child: Column(
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(left: 10, right: 5, top: 5, bottom: 5),
             decoration: BoxDecoration(boxShadow: [
-              /* BoxShadow(
+               BoxShadow(
                 color: Color(0xFFfae3e2),
                 blurRadius: 15.0,
                 offset: Offset(0, 0.75),
-              ),*/
+              ),
             ]),
             child: Card(
                 color: Colors.white,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: const BorderRadius.all(
-                    Radius.circular(5.0),
+                    Radius.circular(2.0),
                   ),
                 ),
                 child: Container(
-                  width: 170,
-                  height: 210,
+                  width: 208,
+                  height: 208,
                   child: Column(
                     children: <Widget>[
                       Stack(
@@ -106,13 +182,9 @@ class PopularFoodTiles extends StatelessWidget {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Center(
-                                child: Image.asset(
-                              'assets/images/popular_foods/' +
-                                  imageUrl +
-                                  ".png",
-                              width: 130,
-                              height: 140,
-                            )),
+                                child: Image.network(imageUrl ,
+                                  width: 130,
+                                  height: 140,)),
                           )
                         ],
                       ),
@@ -241,93 +313,19 @@ class PopularFoodTitle extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            "Popluar Foods",
+            "Nuestras recomendaciones",
             style: TextStyle(
                 fontSize: 20,
                 color: Color(0xFF3a3a3b),
                 fontWeight: FontWeight.w300),
           ),
           Text(
-            "See all",
+            "Ver todo",
             style: TextStyle(
                 fontSize: 16, color: Colors.blue, fontWeight: FontWeight.w100),
           )
         ],
       ),
-    );
-  }
-}
-
-class PopularFoodItems extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      scrollDirection: Axis.horizontal,
-      children: <Widget>[
-        PopularFoodTiles(
-            name: "Fried Egg",
-            imageUrl: "ic_popular_food_1",
-            rating: '4.9',
-            numberOfRating: '200',
-            price: '15.06',
-            slug: "fried_egg"),
-        PopularFoodTiles(
-            name: "Mixed Vegetable",
-            imageUrl: "ic_popular_food_3",
-            rating: "4.9",
-            numberOfRating: "100",
-            price: "17.03",
-            slug: ""),
-        PopularFoodTiles(
-            name: "Salad With Chicken",
-            imageUrl: "ic_popular_food_4",
-            rating: "4.0",
-            numberOfRating: "50",
-            price: "11.00",
-            slug: ""),
-        PopularFoodTiles(
-            name: "Mixed Salad",
-            imageUrl: "ic_popular_food_5",
-            rating: "4.00",
-            numberOfRating: "100",
-            price: "11.10",
-            slug: ""),
-        PopularFoodTiles(
-            name: "Red meat,Salad",
-            imageUrl: "ic_popular_food_2",
-            rating: "4.6",
-            numberOfRating: "150",
-            price: "12.00",
-            slug: ""),
-        PopularFoodTiles(
-            name: "Mixed Salad",
-            imageUrl: "ic_popular_food_5",
-            rating: "4.00",
-            numberOfRating: "100",
-            price: "11.10",
-            slug: ""),
-        PopularFoodTiles(
-            name: "Potato,Meat fry",
-            imageUrl: "ic_popular_food_6",
-            rating: "4.2",
-            numberOfRating: "70",
-            price: "23.0",
-            slug: ""),
-        PopularFoodTiles(
-            name: "Fried Egg",
-            imageUrl: "ic_popular_food_1",
-            rating: '4.9',
-            numberOfRating: '200',
-            price: '15.06',
-            slug: "fried_egg"),
-        PopularFoodTiles(
-            name: "Red meat,Salad",
-            imageUrl: "ic_popular_food_2",
-            rating: "4.6",
-            numberOfRating: "150",
-            price: "12.00",
-            slug: ""),
-      ],
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tipiko_app_usr/views/homepage.dart';
 import 'data/json_user.dart';
 import 'views/json_restful_api.dart';
 import 'views/logged_screen.dart';
@@ -59,7 +60,7 @@ class MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Roboto', hintColor: Color(0xFFd0cece)),
       home: _testValue?
-      LoggedScreen(user:currentUser):
+      HomePage(  ):
       LoginWithRestfulApi(),
     );
   }

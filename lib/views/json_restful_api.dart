@@ -28,7 +28,7 @@ class LoginWithRestfulApi extends StatefulWidget {
 }
 
 class _LoginWithRestfulApiState extends State<LoginWithRestfulApi> {
-  static var uri = "https://ximenacosmeticos.herokuapp.com/api";
+  static var uri = "http://40.71.216.78/tipikodev/api";
 
 
 
@@ -76,15 +76,19 @@ class _LoginWithRestfulApiState extends State<LoginWithRestfulApi> {
         contentType: "application/json"
       );
 
-      Response response = await dio.post('/auth/sign_in',
-          data: {"email": email, "password": password}, options: options);
+      Response response = await dio.post('/Principal/iniciarsesion?Rol=Cliente',
+          data: {"usuario": email, "password": password}, options: options);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        var responseJson;
-        responseJson =   {"access-token": response.headers.value('access-token'),
-          "client": response.headers.value('client'),
-          "uuid": response.headers.value('uid') ,"email" : response.headers.value('uid')}; //access-token client uuid
-        print(responseJson);
+        var responseJs=json.decode(response.data) ;
+        var responseJson ;
+        print( json.decode(response.data) );
+        print(responseJs['Cuerpo']['access_token'] );
+        print(responseJs['Cuerpo']['usuario']['Usuario'] );
+        responseJson =   {"access_token": responseJs['Cuerpo']['access_token'],
+          "client": responseJs['Cuerpo']['usuario']['Usuario'],
+          "uuid": responseJs['Cuerpo']['access_token'] ,"Usuario" : responseJs['Cuerpo']['usuario']['Usuario']}; //access-token client uuid
+
 
         return  responseJson;
       } else if (response.statusCode == 401) {
@@ -125,7 +129,10 @@ class _LoginWithRestfulApiState extends State<LoginWithRestfulApi> {
         color: Colors.white70,
         child:
         _isLoading
-            ? CircularProgressIndicator()
+            ? CircularProgressIndicator(
+          backgroundColor: Colors.cyanAccent,
+          valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+        )
             :
         Column(
           children: <Widget>[

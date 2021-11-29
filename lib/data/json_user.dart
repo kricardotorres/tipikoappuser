@@ -12,10 +12,10 @@ class JsonUser {
   factory JsonUser.fromJson(Map<String, dynamic> parsedJson) {
     Map json = parsedJson ;
     return JsonUser(
-      email: json['email'],
-      access_token: json['access-token'],
-      client: json['client'],
-      uuid: json['uuid'],
+      email: json['Usuario'],
+      access_token: json['access_token'],
+      client: json['access_token'],
+      uuid: json['access_token'],
     );
   }
 }
