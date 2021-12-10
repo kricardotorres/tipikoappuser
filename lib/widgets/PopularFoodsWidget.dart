@@ -51,7 +51,7 @@ class _PopularFoodsWidgetState extends State<PopularFoodsWidget> {
               print('$index');
               return  PopularFoodTiles(name: products[index].nombreProducto, imageUrl: products[index].urlImagenProducto, rating: "",
                   numberOfRating: "",
-                  price: "",
+                  price: products[index].Precio.toString(),
                   slug: "",
                 product: products[index]
               );

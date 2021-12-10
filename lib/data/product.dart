@@ -2,7 +2,8 @@ class Product {
   int id;
   int id_producto;
   String nombreNegocio, nombreProducto, descripcionProducto,
-      urlImagenProducto, fechaInicioPromocion, fechaFinPromocion;
+      urlImagenProducto, fechaInicioPromocion, fechaFinPromocion ;
+  var Precio;
   bool Activo;
 
 
@@ -18,6 +19,7 @@ class Product {
     required this.fechaInicioPromocion,
     required this.fechaFinPromocion,
     required this.Activo,
+    required this.Precio,
   });
 
   Map<String, dynamic> toMap() {
@@ -30,7 +32,8 @@ class Product {
       "urlImagenProducto": urlImagenProducto,
       "fechaInicioPromocion": fechaInicioPromocion,
       "fechaFinPromocion": fechaFinPromocion,
-      "Activo": Activo
+      "Activo": Activo,
+      "Precio": Precio
     };
     return map;
   }
@@ -48,7 +51,8 @@ class Product {
         urlImagenProducto : json['urlImagenProducto'],
         fechaInicioPromocion : json['fechaInicioPromocion'],
         fechaFinPromocion : json['fechaFinPromocion'],
-      Activo : json['Activo'],
+      Activo:  json['Activo'],
+        Precio :json['Precio']
     );
   }
 

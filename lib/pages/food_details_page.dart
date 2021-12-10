@@ -30,7 +30,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 1,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -85,8 +85,11 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
 
               FoodTitleWidget(
                   productName: widget.product!.nombreProducto,
-                  productPrice: "12.00",
-                  productHost:  widget.product!.nombreNegocio,),
+                  productPrice: widget.product!.Precio.toString(),
+                  productHost:  widget.product!.nombreNegocio,
+                productDes:  widget.product!.descripcionProducto,
+
+              ),
               SizedBox(
                 height: 15,
               ),
@@ -106,10 +109,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                   ),
                   tabs: [
                     Tab(
-                      text: 'Food Details',
-                    ),
-                    Tab(
-                      text: 'Food Reviews',
+                      text: 'Descripción',
                     ),
                   ], // list of tabs
                 ),
@@ -120,16 +120,22 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                   children: [
                     Container(
                       color: Colors.white24,
-                      child: DetailContentMenu(),
-                    ),
-                    Container(
-                      color: Colors.white24,
-                      child: DetailContentMenu(),
-                    ), // class name
+                      child:  Container(
+                        child: Text(
+                          widget.product!.descripcionProducto,
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w400,
+                              height: 1.50),
+                          textAlign: TextAlign.justify,
+                        ),
+                      ),
+                    ),   // class name
                   ],
                 ),
               ),
-              BottomMenu(),
+
             ],
           ),
         ),
@@ -142,12 +148,14 @@ class FoodTitleWidget extends StatelessWidget {
   String productName;
   String productPrice;
   String productHost;
+  String productDes;
 
   FoodTitleWidget({
 
     required this.productName,
     required this.productPrice,
     required this.productHost,
+    required this.productDes,
   });
 
   @override
@@ -316,7 +324,7 @@ class AddToCartMenu extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  'Add To Bag',
+                  'Agregar producto',
                   style: new TextStyle(
                       fontSize: 18.0,
                       color: Colors.white,
@@ -332,23 +340,6 @@ class AddToCartMenu extends StatelessWidget {
             iconSize: 30,
           ),
         ],
-      ),
-    );
-  }
-}
-
-class DetailContentMenu extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text(
-        'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero\'s De Finibus Bonorum et Malorum for use in a type specimen book.',
-        style: TextStyle(
-            fontSize: 14.0,
-            color: Colors.black87,
-            fontWeight: FontWeight.w400,
-            height: 1.50),
-        textAlign: TextAlign.justify,
       ),
     );
   }
