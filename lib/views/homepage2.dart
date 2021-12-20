@@ -14,11 +14,11 @@ import 'package:tipiko_app_usr/widgets/TopMenus.dart';
 
 import 'json_restful_api.dart';
 
-class HomePage extends StatefulWidget {
+class HomePageCategory extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageCategoryState createState() => _HomePageCategoryState();
 }
-class _HomePageState extends State<HomePage> {
+class _HomePageCategoryState extends State<HomePageCategory> {
 
   @override
   void initState() {
@@ -218,7 +218,7 @@ class _HomePageState extends State<HomePage> {
       ),
             TopMenus(categories ,_scrollController),
              PopularFoodsWidget(productos_promotion ,_scrollController),
-      BestFoodWidget(),
+            FoodsWidget(productos_promotion  ),
 
           ],
         ),
