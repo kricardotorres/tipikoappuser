@@ -1,5 +1,4 @@
 class Product {
-  int id;
   int id_producto;
   String nombreNegocio, nombreProducto, descripcionProducto,
       urlImagenProducto, fechaInicioPromocion, fechaFinPromocion ;
@@ -9,7 +8,6 @@ class Product {
 
 
   Product({
-    required this.id,
 
     required this.id_producto,
     required this.nombreNegocio,
@@ -24,7 +22,6 @@ class Product {
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
-      "id": id,
       "id_producto": id_producto,
       "nombreNegocio": nombreNegocio,
       "nombreProducto": nombreProducto,
@@ -43,7 +40,6 @@ class Product {
 
     return Product(
 
-      id : json['id'],
         id_producto : json['id_producto'],
         nombreNegocio : json['nombreNegocio'],
         nombreProducto : json['nombreProducto'],
@@ -52,6 +48,23 @@ class Product {
         fechaInicioPromocion : json['fechaInicioPromocion'],
         fechaFinPromocion : json['fechaFinPromocion'],
       Activo:  json['Activo'],
+        Precio :json['Precio']
+    );
+  }
+  factory  Product.fromJson2(Map<String, dynamic> parsedJson) {
+    Map json = parsedJson ;
+
+
+    return Product(
+
+        id_producto : json['id_producto'],
+        nombreNegocio : "",
+        nombreProducto : json['NombreProducto'],
+        descripcionProducto : json['DescripcionProducto'],
+        urlImagenProducto : json['UrlImagen'],
+        fechaInicioPromocion : "",
+        fechaFinPromocion : "",
+        Activo:  true,
         Precio :json['Precio']
     );
   }

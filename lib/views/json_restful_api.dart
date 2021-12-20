@@ -28,7 +28,7 @@ class LoginWithRestfulApi extends StatefulWidget {
 }
 
 class _LoginWithRestfulApiState extends State<LoginWithRestfulApi> {
-  static var uri = "http://40.71.216.78/tipikodev/api";
+  static var uri = "http://ec2-3-16-169-49.us-east-2.compute.amazonaws.com/tipikodev/api";
 
 
 

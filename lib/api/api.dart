@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:http/http.dart' as http;
 
-const baseUrl = "http://40.71.216.78/tipikodev/api";
+const baseUrl = "http://ec2-3-16-169-49.us-east-2.compute.amazonaws.com/tipikodev/api";
 
 class Api {
 
@@ -15,5 +15,11 @@ class Api {
     var url = baseUrl + "/Negocio/ObtenerProductosEnPromocion" ;
     return http.get(Uri.parse(url));
   }
+  static Future getGeoPlace_search(String name   ) {
+    //   "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input="+name+"&inputtype=textquery&fields=formatted_address,name,geometry&key=%20AIzaSyDLPnAwVK_9jOFO1ijDSgTV04ScZX8RNSo"
+  //  var url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input="+name+"&inputtype=textquery&fields=formatted_address,name,geometry&key=%20AIzaSyDLPnAwVK_9jOFO1ijDSgTV04ScZX8RNSo";
 
+    var url = baseUrl + "/Negocio/ObtenerProductosPorNegocio?id_negocio=3&id_categoria=10" ;
+    return http.get(Uri.parse(url));
+  }
 }
