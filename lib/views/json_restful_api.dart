@@ -9,8 +9,10 @@ import 'package:tipiko_app_usr/data/json_user.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tipiko_app_usr/views/homepage.dart';
+import 'package:tipiko_app_usr/views/homepage_2.dart';
 import 'package:tipiko_app_usr/views/logged_screen.dart';
+
+import 'homepage.dart';
 
 const EdgeInsets pad20 = const EdgeInsets.all(20.0);
 const String spKey = 'myBool';

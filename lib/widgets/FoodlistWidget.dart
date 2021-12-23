@@ -7,7 +7,7 @@ import 'package:tipiko_app_usr/pages/food_details_page.dart';
 
 class  FoodsWidget extends StatefulWidget {
 
-  Future<List<Product>>? products;
+   var   products;
 
 
   FoodsWidget( this.products );
@@ -24,27 +24,17 @@ class _FoodsWidgetState extends State<FoodsWidget> {
   ScrollController _scrollController = new ScrollController();
 
   list() {
-    return  FutureBuilder<List>(
-      future: widget.products,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-
-          return Text("Espere");
-        }
-        if (snapshot.hasData) {
-          return dataTable(List<Product>.from(snapshot.data!)   );
-        }
 
 
-        return Text("Espere");
-      },
-    );
+
+          return dataTable(widget.products);
+
   }
-  SingleChildScrollView dataTable(List<Product> products) {
+  SingleChildScrollView dataTable(List<Product> ? products) {
     return SingleChildScrollView(
       child: ListView.builder(shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: products.length,
+          itemCount: products!.length,
           itemBuilder: (context, index) {
             print('$index');
             return  PopularFoodTiles(name: products[index].nombreProducto, imageUrl: products[index].urlImagenProducto, rating: "",
@@ -73,7 +63,7 @@ class _FoodsWidgetState extends State<FoodsWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height-600,
+      height: MediaQuery.of(context).size.height-200,
       child: Column(
         children: <Widget>[
           PopularFoodTitle(),

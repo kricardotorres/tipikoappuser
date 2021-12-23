@@ -6,6 +6,8 @@ import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
 import 'package:tipiko_app_usr/api/api.dart';
 import 'package:tipiko_app_usr/data/category.dart';
 import 'package:tipiko_app_usr/data/product.dart';
+import 'package:tipiko_app_usr/data/restaurant.dart';
+import 'package:tipiko_app_usr/views/homepage_2.dart';
 import 'package:tipiko_app_usr/widgets/BestFoodWidget.dart';
 import 'package:tipiko_app_usr/widgets/BottomNavBarWidget.dart';
 import 'package:tipiko_app_usr/widgets/FoodlistWidget.dart';
@@ -13,7 +15,6 @@ import 'package:tipiko_app_usr/widgets/PopularFoodsWidget.dart';
 import 'package:tipiko_app_usr/widgets/TopMenus.dart';
 
 import 'json_restful_api.dart';
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _getRoutes();
+
   }
   _getRoutes( ) async {
     setState(() {
@@ -34,8 +36,8 @@ class _HomePageState extends State<HomePage> {
 
   }
 
-  late Future<List<Product?>>   products ;
-  List<Product?> _products = [];
+  late Future<List<Restaurant?>>   restaurants ;
+  List<Restaurant?> _restaurants = [];
   TextEditingController controller_destiny = TextEditingController();
   Future<List<Category>>? categories;
   List<Category> _categories = [];
@@ -45,37 +47,34 @@ class _HomePageState extends State<HomePage> {
   ScrollController _scrollController = new ScrollController();
 
   var json_o;
-  Future<List<Product?>> getProducts(String name) async {
+  Future<List<Restaurant?>> getProducts(String name) async {
 
-    Api.getGeoPlace_search(name).then((response) {
+    Api.getRestaurants_search(name).then((response) {
       setState(() {
-        _products.clear();
+        _restaurants.clear();
         json_o = json.decode(response.body);
-        if (json_o['Cuerpo']['Productos'].length > 0) {
-          for (int i = 0; i < json_o['Cuerpo']['Productos'].length; i++) {
-            if (name!=""&&json_o['Cuerpo']['Productos'][i]['NombreProducto'].toLowerCase().contains( name.toLowerCase() )){
-              _products.add(Product.fromJson2(json_o['Cuerpo']['Productos'][i]));
-            }
+        if (json_o['Cuerpo'].length > 0) {
+          for (int i = 0; i < json_o['Cuerpo'].length; i++) {
+               _restaurants.add(Restaurant.fromJson(json_o['Cuerpo'][i]));
+
           }
         }
       });
     });
 
-    print(_products.length.toString()+"aaaaaaaaaaaaaaaaaaaa");
-    return _products;
+     return _restaurants;
   }
   _HomePageState() {
     controller_destiny.addListener(() {
       if (controller_destiny.text.isEmpty) {
-        products = getProducts("" );
+        restaurants = getProducts("" );
       } else {
 
         setState(() {
 
-          print("Esto deberia estar pasando");
-          _products.clear();
+          _restaurants.clear();
 
-          products = getProducts(controller_destiny.text);
+          restaurants = getProducts(controller_destiny.text);
         });
       }
     });}
@@ -89,9 +88,7 @@ class _HomePageState extends State<HomePage> {
         if (json_o['Cuerpo'].length > 0) {
           for (int i = 0; i < json_o['Cuerpo'].length; i++) {
             var ctg= Category.fromJson(json_o['Cuerpo'][i]);
-            print(json_o['Cuerpo'][i]['UrlImagen']);
-            print('aaaaaaaaaaaaaaaaaaaaaaa');
-              _categories!.add(ctg);
+                _categories!.add(ctg);
 
           }
         }
@@ -117,11 +114,11 @@ class _HomePageState extends State<HomePage> {
     return _productos_promotion;
   }
 
-  Future<List<Product?>> getproductos_search( )   {
+  Future<List<Restaurant?>> getproductos_search( )   {
 
     return Future.delayed(
       Duration(seconds: 2),
-          () => products,
+          () => restaurants,
     );
 
   }
@@ -184,14 +181,14 @@ class _HomePageState extends State<HomePage> {
 
             return ListTile(
               leading: Icon(Icons.location_on),
-              title: Text( (suggestion as Product).nombreProducto.toString()),
-              subtitle: Text( (suggestion as Product).descripcionProducto.toString()),
+              title: Text( (suggestion as Restaurant).Nombres.toString()),
+              subtitle: Text( (suggestion as Restaurant).Direccion.toString()),
             );
           },
-          onSuggestionSelected: (suggestion) {
-            controller_destiny.text= suggestion.toString();
+            onSuggestionSelected: (suggestion) {
+              Navigator.push(context, ScaleRoute(page: HomePageCategory(  (suggestion as Restaurant))));
 
-          },
+            },
         ),
           /*TextField(
 
@@ -217,8 +214,9 @@ class _HomePageState extends State<HomePage> {
         )*/
       ),
             TopMenus(categories ,_scrollController),
-             PopularFoodsWidget(productos_promotion ,_scrollController),
-      BestFoodWidget(),
+            PopularFoodsWidget(productos_promotion ,_scrollController),
+            BestFoodWidget(),
+            //FoodsWidget(productos_promotion  ),
 
           ],
         ),

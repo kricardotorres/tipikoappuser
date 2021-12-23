@@ -29,7 +29,7 @@ class Category {
         id : json['id_categoria'],
         name  : json['nombreCategoria'],
       description  : json['descripcionCategoria'],
-      UrlImagen  : json['UrlImagen'],
+      UrlImagen  : json['UrlImagen']==null ? "": json['UrlImagen']  ,
     );
   }
 

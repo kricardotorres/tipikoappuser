@@ -70,6 +70,24 @@ class Product {
   }
 
 
+  factory  Product.fromJson3(Map<String, dynamic> parsedJson) {
+    Map json = parsedJson ;
+
+
+    return Product(
+
+
+        id_producto : json['id_producto'],
+        nombreNegocio : "",
+        nombreProducto : json['NombreProducto'],
+        descripcionProducto : json['DescripcionProducto'],
+        urlImagenProducto : json['UrlImagen'],
+        fechaInicioPromocion : "",
+        fechaFinPromocion : "",
+        Activo:  true,
+        Precio :json['Precio']
+    );
+  }
 
 
 

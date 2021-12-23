@@ -15,11 +15,11 @@ class Api {
     var url = baseUrl + "/Negocio/ObtenerProductosEnPromocion" ;
     return http.get(Uri.parse(url));
   }
-  static Future getGeoPlace_search(String name   ) {
+  static Future getRestaurants_search(String name   ) {
     //   "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input="+name+"&inputtype=textquery&fields=formatted_address,name,geometry&key=%20AIzaSyDLPnAwVK_9jOFO1ijDSgTV04ScZX8RNSo"
   //  var url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input="+name+"&inputtype=textquery&fields=formatted_address,name,geometry&key=%20AIzaSyDLPnAwVK_9jOFO1ijDSgTV04ScZX8RNSo";
 
-    var url = baseUrl + "/Negocio/ObtenerProductosPorNegocio?id_negocio=3&id_categoria=10" ;
+    var url = baseUrl + "/Negocio/ObtenerNegocioPorParametro?nombreNegocio="+name ;
     return http.get(Uri.parse(url));
   }
 }
