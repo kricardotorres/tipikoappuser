@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
         if (json_o['Cuerpo'].length > 0) {
           for (int i = 0; i < json_o['Cuerpo'].length; i++) {
             var ctg= Category.fromJson(json_o['Cuerpo'][i]);
-                _categories!.add(ctg);
+                 _categories!.add(ctg);
 
           }
         }
@@ -215,7 +215,7 @@ class _HomePageState extends State<HomePage> {
       ),
             TopMenus(categories ,_scrollController),
             PopularFoodsWidget(productos_promotion ,_scrollController),
-            BestFoodWidget(),
+
             //FoodsWidget(productos_promotion  ),
 
           ],

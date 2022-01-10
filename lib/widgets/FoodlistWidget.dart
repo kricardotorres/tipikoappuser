@@ -63,7 +63,7 @@ class _FoodsWidgetState extends State<FoodsWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height-200,
+      height: MediaQuery.of(context).size.height,
       child: Column(
         children: <Widget>[
           PopularFoodTitle(),
@@ -129,7 +129,7 @@ class PopularFoodTiles extends StatelessWidget {
                   ),
                 ),
                 child: Container(
-                  width: 208,
+                  width: 308,
                   height: 208,
                   child: Column(
                     children: <Widget>[
@@ -295,18 +295,6 @@ class PopularFoodTitle extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(
-            "Nuestras recomendaciones",
-            style: TextStyle(
-                fontSize: 20,
-                color: Color(0xFF3a3a3b),
-                fontWeight: FontWeight.w300),
-          ),
-          Text(
-            "Ver todo",
-            style: TextStyle(
-                fontSize: 16, color: Colors.blue, fontWeight: FontWeight.w100),
-          )
         ],
       ),
     );

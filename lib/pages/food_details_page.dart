@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
 import 'package:tipiko_app_usr/api/api.dart';
 import 'package:tipiko_app_usr/data/category.dart';
@@ -11,6 +12,8 @@ import 'package:tipiko_app_usr/widgets/PopularFoodsWidget.dart';
 import 'package:tipiko_app_usr/widgets/SearchWidget.dart';
 import 'package:tipiko_app_usr/widgets/TopMenus.dart';
 
+import '../cart_bloc.dart';
+import '../cart_page.dart';
 import 'food_order_page.dart';
 
 class FoodDetailsPage extends StatefulWidget {
@@ -26,9 +29,32 @@ class FoodDetailsPage extends StatefulWidget {
 }
 
 class _FoodDetailsPageState extends State<FoodDetailsPage> {
+  int _counter = 1;
+   void _incrementCounter() {
+     setState(() {
+       // This call to setState tells the Flutter framework that something has
+       // changed in this State, which causes it to rerun the build method below
+       // so that the display can reflect the updated values. If we changed
+       // _counter without calling setState(), then the build method would not be
+       // called again, and so nothing would appear to happen.
+       _counter++;
+     });
+   }
+  void _decrementCounter() {
+    setState(() {
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
 
+      if (_counter>1)
+        _counter--;
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    var bloc = Provider.of<Cart>(context);
     return DefaultTabController(
       length: 1,
       child: Scaffold(
@@ -51,7 +77,8 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                   color: Color(0xFF3a3737),
                 ),
                 onPressed: () {
-                  Navigator.push(context, ScaleRoute(page: FoodOrderPage()));
+
+                 Navigator.push(context, ScaleRoute(page: FoodOrderPage()));
                 })
           ],
         ),
@@ -93,7 +120,65 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
               SizedBox(
                 height: 15,
               ),
-              AddToCartMenu(),
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    IconButton(
+                      onPressed: () {
+                        _decrementCounter();
+                      },
+                      icon: Icon(Icons.remove),
+                      color: Colors.black,
+                      iconSize: 30,
+                    ),
+                    InkWell(
+                      onTap: () {
+
+
+                        for (int i = 0; i <_counter; i++) {
+
+                          bloc.addItem(widget.product!.id_producto.toString(), double.parse(widget.product!.Precio.toString()),widget.product!.nombreProducto.toString());
+
+                        }
+                        Navigator.push(
+                          context,
+                          ScaleRoute(
+                            page: FoodOrderPage(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 200.0,
+                        height: 45.0,
+                        decoration: new BoxDecoration(
+                          color: Color(0xFFfd2c2c),
+                          border: Border.all(color: Colors.white, width: 2.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '$_counter Agregar producto',
+                            style: new TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+
+                        _incrementCounter();
+                      },
+                      icon: Icon(Icons.add),
+                      color: Color(0xFFfd2c2c),
+                      iconSize: 30,
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(
                 height: 15,
               ),
@@ -297,50 +382,3 @@ class BottomMenu extends StatelessWidget {
   }
 }
 
-class AddToCartMenu extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.remove),
-            color: Colors.black,
-            iconSize: 30,
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.push(context, ScaleRoute(page: FoodOrderPage()));
-            },
-            child: Container(
-              width: 200.0,
-              height: 45.0,
-              decoration: new BoxDecoration(
-                color: Color(0xFFfd2c2c),
-                border: Border.all(color: Colors.white, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Center(
-                child: Text(
-                  'Agregar producto',
-                  style: new TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400),
-                ),
-              ),
-            ),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.add),
-            color: Color(0xFFfd2c2c),
-            iconSize: 30,
-          ),
-        ],
-      ),
-    );
-  }
-}

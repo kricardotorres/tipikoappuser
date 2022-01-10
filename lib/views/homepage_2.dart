@@ -55,8 +55,6 @@ class _HomePageCategoryState extends State<HomePageCategory> {
   }
   _getRoutes( ) async {
     setState(() {
-      categories= getcategories() as Future<List<Category>>;
-      productos_promotion= getproductos_promotion() as Future<List<Product>>;
     });
 
 
@@ -92,7 +90,7 @@ class _HomePageCategoryState extends State<HomePageCategory> {
     print(_products.length.toString()+"aaaaaaaaaaaaaaaaaaaa");
     return _products;
   }
-  _HomePageState() {
+  _HomePageCategoryState() {
 
 
 
@@ -112,42 +110,6 @@ class _HomePageCategoryState extends State<HomePageCategory> {
     });}
 
 
-  Future<List<Category>> getcategories( ) async {
-
-    Api.getCategories().then((response) {
-      setState(() {
-        var json_o = json.decode(response.body);
-        if (json_o['Cuerpo'].length > 0) {
-          for (int i = 0; i < json_o['Cuerpo'].length; i++) {
-            var ctg= Category.fromJson(json_o['Cuerpo'][i]);
-            print(json_o['Cuerpo'][i]['UrlImagen']);
-            print('aaaaaaaaaaaaaaaaaaaaaaa');
-              _categories!.add(ctg);
-
-          }
-        }
-      });
-    });
-    return _categories;
-  }
-  Future<List<Product>> getproductos_promotion( ) async {
-
-    Api.getProductosEnPromocion().then((response) {
-      setState(() {
-        var json_o = json.decode(response.body);
-        if (json_o['Cuerpo'].length > 0) {
-          for (int i = 0; i < json_o['Cuerpo'].length; i++) {
-            var ctg= Product.fromJson(json_o['Cuerpo'][i]);
-            print(json_o['Cuerpo'][i]);
-            _productos_promotion!.add(ctg);
-
-          }
-        }
-      });
-    });
-    return _productos_promotion;
-  }
-
   Future<List<Product?>> getproductos_search( )   {
 
     return Future.delayed(
@@ -166,7 +128,7 @@ class _HomePageCategoryState extends State<HomePageCategory> {
         backgroundColor: Color(0xFFFAFAFA),
         elevation: 0,
         title: Text(
-          "What would you like to eat?",
+          "Menu del restaurant",
           style: TextStyle(
               color: Color(0xFF3a3737),
               fontSize: 16,
@@ -174,82 +136,13 @@ class _HomePageCategoryState extends State<HomePageCategory> {
         ),
         brightness: Brightness.light,
         actions: <Widget>[
-          IconButton(
-              icon: Icon(
-                Icons.notifications_none,
-                color: Color(0xFF3a3737),
-              ),
-                  onPressed: () {Navigator.push(context, ScaleRoute(page: LoginWithRestfulApi()));})
+
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-        Padding(
-        padding: EdgeInsets.only(left: 10,top: 5,right: 10,bottom: 5),
-        child:    TypeAheadField(
-          textFieldConfiguration: TextFieldConfiguration(
-            controller:   controller_destiny,
 
-            style: TextStyle(color:  Color(0xFF3a3737), fontWeight: FontWeight.w300, decorationColor: Colors.white, ),
-            decoration: InputDecoration(
-              suffixIcon: IconButton(
-                  icon: Icon(Icons.backspace,
-                    color: Colors.orange,),
-                  onPressed: () {
-                    controller_destiny.text='';
-                  }) ,
-              prefixIcon:  Icon(Icons.flag,
-                color: Colors.orange,),
-              border: OutlineInputBorder(),
-
-             ),
-          ),
-          suggestionsCallback: (pattern) async {
-
-
-            return  getproductos_search( );
-            // ;
-          },
-          itemBuilder: (context, suggestion) {
-            var current  =  suggestion ;
-
-            return ListTile(
-              leading: Icon(Icons.location_on),
-              title: Text( (suggestion as Product).nombreProducto.toString()),
-              subtitle: Text( (suggestion as Product).descripcionProducto.toString()),
-            );
-          },
-          onSuggestionSelected: (suggestion) {
-            controller_destiny.text= suggestion.toString();
-
-          },
-        ),
-          /*TextField(
-
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              borderSide: BorderSide(
-                width: 0,
-                color: Color(0xFFfb3132),
-                style: BorderStyle.none,
-              ),
-            ),
-            filled: true,
-            prefixIcon: Icon(
-              Icons.search,
-              color: Color(0xFFfb3132),
-            ),
-            fillColor: Color(0xFFFAFAFA),
-            suffixIcon: Icon(Icons.sort,color: Color(0xFFfb3132),),
-            hintStyle: new TextStyle(color: Color(0xFFd0cece), fontSize: 18),
-            hintText: "What would your like to buy?",
-          ),
-        )*/
-      ),
-
-            TopMenus(categories ,_scrollController),
             FoodsWidget(_stproducts   ),
 
 

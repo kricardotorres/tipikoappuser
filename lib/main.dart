@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tipiko_app_usr/views/homepage.dart';
 import 'package:tipiko_app_usr/views/homepage_2.dart';
+import 'cart_bloc.dart';
 import 'data/json_user.dart';
 import 'views/json_restful_api.dart';
 import 'views/logged_screen.dart';
@@ -54,15 +56,24 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
 
-      title: 'Flutter Google SignIn',
 
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Roboto', hintColor: Color(0xFFd0cece)),
-      home: _testValue?
-      HomePage(  ):
-      LoginWithRestfulApi(),
-    );
+    return MultiProvider(
+        providers: [
+
+    ChangeNotifierProvider.value(
+    value: Cart(),
+    ),
+    ],
+        child: MaterialApp(
+
+          title: 'Flutter Google SignIn',
+
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(fontFamily: 'Roboto', hintColor: Color(0xFFd0cece)),
+          home: _testValue?
+          HomePage(  ):
+          LoginWithRestfulApi(),
+        ));
   }
 }

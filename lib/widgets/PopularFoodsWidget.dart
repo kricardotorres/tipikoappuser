@@ -82,7 +82,7 @@ class _PopularFoodsWidgetState extends State<PopularFoodsWidget> {
           PopularFoodTitle(),
           Expanded(
             child: Container(
-              height: 100,
+              height: MediaQuery.of(context).size.height-200,
               child:ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
