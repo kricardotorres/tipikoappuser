@@ -11,6 +11,10 @@ class Api {
     var url = baseUrl + "/Negocio/ObtenerCategorias" ;
     return http.get(Uri.parse(url));
   }
+  static Future getCategoriesRestaurants(int ? id ) {
+    var url = baseUrl + "/Negocio/ObtenerNegocioPorCategoria?id_categoria="+id.toString() ;
+    return http.get(Uri.parse(url));
+  }
   static Future getProductosEnPromocion( ) {
     var url = baseUrl + "/Negocio/ObtenerProductosEnPromocion" ;
     return http.get(Uri.parse(url));

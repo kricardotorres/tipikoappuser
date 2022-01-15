@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:provider/provider.dart';
 import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
 import 'package:tipiko_app_usr/api/api.dart';
 import 'package:tipiko_app_usr/data/category.dart';
@@ -13,6 +14,7 @@ import 'package:tipiko_app_usr/widgets/FoodlistWidget.dart';
 import 'package:tipiko_app_usr/widgets/PopularFoodsWidget.dart';
 import 'package:tipiko_app_usr/widgets/TopMenus.dart';
 
+import '../cart_bloc.dart';
 import 'json_restful_api.dart';
 
 
@@ -123,6 +125,10 @@ class _HomePageCategoryState extends State<HomePageCategory> {
   @override
   Widget build(BuildContext context) {
 
+
+    final bloc = Provider.of<Cart>(context, listen: false);
+    if (bloc.itemCount>0){
+      bloc.clear();}
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFFAFAFA),

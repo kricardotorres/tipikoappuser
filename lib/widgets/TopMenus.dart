@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
 import 'package:tipiko_app_usr/data/category.dart';
+import 'package:tipiko_app_usr/views/homepage_3Cat.dart';
 
 class TopMenus extends StatefulWidget {
 
@@ -44,7 +46,7 @@ class _TopMenusState extends State<TopMenus> {
               itemCount: categories.length,
               itemBuilder: (context, index) {
                 print('$index');
-                return  TopMenuTiles(name: categories[index].name, imageUrl: categories[index].UrlImagen, slug: "");
+                return  TopMenuTiles(id: categories[index].id ,name: categories[index].name, imageUrl: categories[index].UrlImagen, slug: "");
 
 
 
@@ -78,12 +80,14 @@ class _TopMenusState extends State<TopMenus> {
 }
 
 class TopMenuTiles extends StatelessWidget {
+  int ? id;
   String name;
   String imageUrl;
   String slug;
 
   TopMenuTiles(
       {
+        required this.id,
        required this.name,
        required this.imageUrl,
        required this.slug})
@@ -91,8 +95,12 @@ class TopMenuTiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
+    return GestureDetector(
+      onTap: () {
+
+
+        Navigator.push(context, ScaleRoute(page: HomePageCategoryStores( id  )));
+      },
       child: Column(
         children: <Widget>[
           Container(
