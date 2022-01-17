@@ -45,7 +45,6 @@ class _TopMenusState extends State<TopMenus> {
               scrollDirection: Axis.horizontal,
               itemCount: categories.length,
               itemBuilder: (context, index) {
-                print('$index');
                 return  TopMenuTiles(id: categories[index].id ,name: categories[index].name, imageUrl: categories[index].UrlImagen, slug: "");
 
 

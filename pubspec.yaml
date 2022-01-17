@@ -27,7 +27,9 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  latlng: any
+  latlong2: ^0.8.1
+
+
   flutter:
     sdk: flutter
     # The following adds the Cupertino Icons font to your application.
@@ -44,7 +46,8 @@ dependencies:
   simple_animations:   ^4.0.0
   carousel_pro: ^1.0.0
   font_awesome_flutter: ^9.0.0-nullsafety
-
+  flutter_map: any
+  location: ^4.2.0
   shared_preferences:
   flutter_typeahead: ^3.2.4
 dev_dependencies:
@@ -115,6 +118,12 @@ flutter:
           - asset: assets/fonts/Roboto-Regular.ttf
           - asset: assets/fonts/Roboto-Bold.ttf
           - asset: assets/fonts/Roboto-Light.ttf
+
+      - family: EBGaramond
+        fonts:
+          - asset: assets/fonts/EBGaramond-Regular.ttf
+          - asset: assets/fonts/EBGaramond-Bold.ttf
+          - asset: assets/fonts/EBGaramond-Italic.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

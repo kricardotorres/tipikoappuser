@@ -76,7 +76,6 @@ class _OrderButtonState extends State<OrderButton> {
     return FlatButton(
       child: _isLoading ? CircularProgressIndicator() : Text('Order Now'),
       onPressed: () {
-        print("");
       },
       textColor: Theme.of(context).primaryColor,
     );

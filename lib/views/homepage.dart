@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:location/location.dart';
 import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
 import 'package:tipiko_app_usr/api/api.dart';
 import 'package:tipiko_app_usr/data/category.dart';
@@ -20,10 +21,19 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 class _HomePageState extends State<HomePage> {
+  var currentLocation;
 
+
+
+  Location location = Location();
   @override
   void initState() {
     super.initState();
+    location.onLocationChanged.listen((value) {
+      setState(() {
+        currentLocation = value  ;
+      });
+    });
     _getRoutes();
 
   }
@@ -104,7 +114,6 @@ class _HomePageState extends State<HomePage> {
         if (json_o['Cuerpo'].length > 0) {
           for (int i = 0; i < json_o['Cuerpo'].length; i++) {
             var ctg= Product.fromJson(json_o['Cuerpo'][i]);
-            print(json_o['Cuerpo'][i]);
             _productos_promotion!.add(ctg);
 
           }

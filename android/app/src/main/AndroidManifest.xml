@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tipiko_app_usr">
-   <application
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
         android:label="tipiko_app_usr"
         android:icon="@mipmap/ic_launcher">
         <activity

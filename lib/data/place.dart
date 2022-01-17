@@ -1,13 +1,13 @@
-import 'package:latlng/latlng.dart';
+import 'package:latlong2/latlong.dart';
 class Place  {
-  String? place_name;
-  String? address;
-  LatLng? ubication;
+  String place_name;
+  String address;
+  LatLng ubication;
 
   Place(
-      this.place_name,
-      this.ubication,
-      this.address
+  { required this.place_name,
+    required this.ubication,
+    required this.address}
       );
 
 
@@ -19,23 +19,22 @@ class Place  {
     };
     return map;
   }
-  Place.fromJson(Map json){
 
 
-    place_name = json['name'] ;
-    address = json['formatted_address'];
-    ubication =  LatLng(json['geometry']['location']['lat'].toDouble(), json['geometry']['location']['lng'].toDouble() );
+
+  factory  Place.fromJson(Map<String, dynamic> parsedJson) {
+    Map json = parsedJson ;
+    var place_name = json['name'] ;
+    var address = json['formatted_address'];
+    var ubication =  LatLng(json['geometry']['location']['lat'].toDouble(), json['geometry']['location']['lng'].toDouble() );
+
+    return Place(
+
+        place_name : place_name,
+        address : address,
+        ubication:   ubication
+    );
   }
-
-
-
-  Place.fromMap(Map<String, dynamic> map) {
-
-    place_name = map['name'] ;
-    address = map['formatted_address'];
-    ubication =  LatLng(map['geometry']['location']['lat'].toDouble(), map['geometry']['location']['lng'].toDouble() );
-  }
-
 
 
 

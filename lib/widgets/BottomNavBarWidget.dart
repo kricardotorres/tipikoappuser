@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
 import 'package:tipiko_app_usr/pages/food_order_page.dart';
+import 'package:tipiko_app_usr/pages/nearest_location.dart';
 import 'package:tipiko_app_usr/views/homepage.dart';
 
 class BottomNavBarWidget extends StatefulWidget {
@@ -19,8 +20,9 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
 
         print("aaaaaaaaaaaaaaaaaaaa-----------");
         print(index);
-        if (index == 1) Navigator.push(context, ScaleRoute(page: FoodOrderPage()));
-        if (index == 2) Navigator.push(context, ScaleRoute(page: FoodOrderPage()));
+        if (index == 1) Navigator.push(context, ScaleRoute(page:  MapNearest(title: 'Ruta cercana', passed_Location : ({  "latitude": 20.966791,   'longitude': -89.623675}))));
+        if (index == 2) Navigator.push(context, ScaleRoute(page:FoodOrderPage()
+        ));
         if (index == 3) Navigator.push(context, ScaleRoute(page: FoodOrderPage()));
 
 

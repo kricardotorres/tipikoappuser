@@ -36,13 +36,8 @@ class _HomePageCategoryState extends State<HomePageCategory> {
     super.initState();
     _getRoutes();
 
-    print(widget.restaurant!.productos );
-    print("Aver como sale es nulo?");
-    print(widget.restaurant!.productos );
     for (int i = 0; i < widget.restaurant!.productos!.length; i++)  {
       var prjson_ooduct=   widget.restaurant!.productos![i];
-        print("zzzzzzzzzzzz");
-      print(prjson_ooduct);
       _stproducts!.add(Product(   id_producto : prjson_ooduct['id_producto'],
           nombreNegocio : "",
           nombreProducto : prjson_ooduct['NombreProducto'],
@@ -89,7 +84,6 @@ class _HomePageCategoryState extends State<HomePageCategory> {
       });
     });
 
-    print(_products.length.toString()+"aaaaaaaaaaaaaaaaaaaa");
     return _products;
   }
   _HomePageCategoryState() {
@@ -103,7 +97,6 @@ class _HomePageCategoryState extends State<HomePageCategory> {
 
         setState(() {
 
-          print("Esto deberia estar pasando");
           _products.clear();
 
           products = getProducts(controller_destiny.text);

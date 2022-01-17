@@ -258,7 +258,7 @@ class PromoCodeWidget extends StatelessWidget {
                     color: Color(0xFFfd2c2c),
                   ),
                   onPressed: () {
-                    debugPrint('222');
+
                   })),
         ),
       ),
