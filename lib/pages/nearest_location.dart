@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tipiko_app_usr/data/json_user.dart';
 import 'package:tipiko_app_usr/data/place.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
@@ -13,9 +15,16 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:location/location.dart';
 
 import 'package:positioned_tap_detector_2/positioned_tap_detector_2.dart';
+import 'package:tipiko_app_usr/data/u_address.dart';
 import 'bus_list.dart';
 
 
+const String spKey = 'myBool';
+const String key = 'access_token';
+const String email = 'email';
+
+const String  uuid = 'uuid';
+const String  client = 'client';
 class MapNearest extends StatefulWidget {
     String title;
       Map<String, double> passed_Location;
@@ -28,6 +37,8 @@ class MapNearest extends StatefulWidget {
 
 
 }
+
+JsonUser currentUser = new JsonUser(email: '', access_token: '', client: '', uuid: '');
 class _MapNearestPageState extends State<MapNearest>   with TickerProviderStateMixin {
   late Future<List<Place?>> places ;
   List<Place?> _places = [];
@@ -35,13 +46,19 @@ class _MapNearestPageState extends State<MapNearest>   with TickerProviderStateM
 
 
   List<BusRoute?> _bus_routes = [];
+  Future<List<UAddress?>>  ?  uaddress;
+
+
+  List<UAddress?> _uaddress = [];
 
 
   Location location = Location();
   var json_o;
   var currentLocation;
   late Marker  marker ;
+  late SharedPreferences sharedPreferences;
 
+  late bool _testValue=false;
   ScrollController _scrollController = new ScrollController();
   Future<List<Place?>> getPlaces(String name) async {
 
@@ -64,15 +81,27 @@ class _MapNearestPageState extends State<MapNearest>   with TickerProviderStateM
   void initState() {
     super.initState();
 
+    SharedPreferences.getInstance().then((SharedPreferences sp) {
+      sharedPreferences = sp;
+      var authenticationToken_load = sharedPreferences.get(key).toString();
+      var emailload  = sharedPreferences.get(email).toString();
+      var client_load  = sharedPreferences.get(client).toString();
+      var uuid_load  = sharedPreferences.get(uuid).toString();
+
+      currentUser = JsonUser(email: emailload , access_token : authenticationToken_load, client: client_load, uuid: uuid_load);
+      // will be null if never previously saved
+      if (authenticationToken_load  == "null") {
+        _testValue = false;
+      }else {_testValue = true;}
+
+    });
     mapController = MapController();
 
     location.onLocationChanged.listen((value) {
-      setState(() {
-        currentLocation = value  ;
-       // _bus_routes = [];
-       // bus_routes =  getBusRoutes((widget.passed_Location==null ? LatLng(20.966791, -89.623675):LatLng(widget.passed_Location!["latitude"]!, widget.passed_Location!["longitude"]!)))    ;
 
-      });
+        currentLocation = value  ;
+
+
     });
 
 
@@ -97,7 +126,43 @@ class _MapNearestPageState extends State<MapNearest>   with TickerProviderStateM
       setState(() {
 
         json_o = json.decode(response.body);
-        controller_name.text = (json_o['results'][0]['formatted_address']);
+
+        controller_direccion.text = (json_o['results'][0]['formatted_address']);
+
+        for (int i = 0; i < json_o['results'][0]['address_components'].length; i++) {
+
+          if( json_o['results'][0]['address_components'][i]['types'].toString()== '[route]' )
+            {controller_calle.text = (json_o['results'][0]['address_components'][i]['long_name']);break;}else{
+            controller_calle.text="";
+          }
+
+
+        }
+        for (int i = 0; i < json_o['results'][0]['address_components'].length; i++) {
+
+
+          if( json_o['results'][0]['address_components'][i]['types'].toString()== '[political, sublocality, sublocality_level_1]' )
+          {controller_colonia.text = (json_o['results'][0]['address_components'][i]['long_name']);
+          break;
+          }else{
+            controller_colonia.text="";
+          }
+
+        }
+        for (int i = 0; i < json_o['results'][0]['address_components'].length; i++) {
+
+
+          if( json_o['results'][0]['address_components'][i]['types'].toString()== '[street_number]' )
+          {controller_numInteriro.text = (json_o['results'][0]['address_components'][i]['long_name']);break;
+          }else{
+            controller_numInteriro.text="";
+          }
+
+
+        }
+
+        controller_latitud.text = latLng.latitude.toString();
+        controller_longitud.text = latLng.longitude.toString();
       });
     });
 
@@ -127,6 +192,22 @@ class _MapNearestPageState extends State<MapNearest>   with TickerProviderStateM
     });
 
     return _bus_routes;
+  }
+
+
+  Future<List<UAddress?>> postDireccion(UAddress ? uaddress) async {
+
+    Api.postAddres(uaddress).then((response) {
+      setState(() {
+        json_o = json.decode(response.body);
+        _showSnackBar("Dirección guardada!");
+        Navigator.of(context).pop();
+
+
+      });
+    });
+
+    return _uaddress;
   }
 
 
@@ -166,12 +247,21 @@ class _MapNearestPageState extends State<MapNearest>   with TickerProviderStateM
     _animatedMapMove(latlng, 16.0);
 
   }
-  TextEditingController controller_name = TextEditingController();
+  TextEditingController controller_direccion = TextEditingController();
+  TextEditingController controller_calle = TextEditingController();
+  TextEditingController controller_colonia = TextEditingController();
+  TextEditingController controller_referencia = TextEditingController();
+  TextEditingController controller_numExterior = TextEditingController();
+  TextEditingController controller_numInteriro = TextEditingController();
+  TextEditingController controller_latitud = TextEditingController();
+  TextEditingController controller_longitud = TextEditingController();
+  TextEditingController controller_cruzamientos = TextEditingController();
+
 
 
   _MapNearestPageState() {
-    controller_name.addListener(() {
-      if (controller_name.text.isEmpty) {
+    controller_direccion.addListener(() {
+      if (controller_direccion.text.isEmpty) {
         places = getPlaces("" );
       } else {
 
@@ -179,75 +269,18 @@ class _MapNearestPageState extends State<MapNearest>   with TickerProviderStateM
 
           _places!.clear();
 
-          places =  getPlaces(controller_name.text)  ;
+          places =  getPlaces(controller_direccion.text)  ;
         });
       }
     });
   }
-  static var uri = "http://ec2-3-16-169-49.us-east-2.compute.amazonaws.com/tipikodev/api";
 
-
-
-  static BaseOptions options = BaseOptions(
-      baseUrl: uri,
-      responseType: ResponseType.plain,
-      connectTimeout: 30000,
-      receiveTimeout: 30000,
-      validateStatus: (code) {
-        if (code! >= 200) {
-          return true;
-        }else{
-          return false;
-        }
-      });
-  bool _isLoading = false;
-  static Dio dio = Dio(options);
-
-  Future<dynamic> _loginUser(String email, String password) async {
-    try {
-      Options options = Options(
-          contentType: "application/json"
-      );
-
-      Response response = await dio.post('/Principal/iniciarsesion?Rol=Cliente',
-          data: {"usuario": email, "password": password}, options: options);
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        var responseJs=json.decode(response.data) ;
-        var responseJson ;
-        print( json.decode(response.data) );
-        print(responseJs['Cuerpo']['access_token'] );
-        print(responseJs['Cuerpo']['usuario']['Usuario'] );
-        responseJson =   {"access_token": responseJs['Cuerpo']['access_token'],
-          "client": responseJs['Cuerpo']['usuario']['Usuario'],
-          "uuid": responseJs['Cuerpo']['access_token'] ,"Usuario" : responseJs['Cuerpo']['usuario']['Usuario']}; //access-token client uuid
-
-
-        return  responseJson;
-      } else if (response.statusCode == 401) {
-        setState(() => _isLoading = false);
-        throw Exception("Incorrect Email/Password");
-      } else
-        setState(() => _isLoading = false);
-      throw Exception('Authentication Error');
-    } on DioError catch (exception) {
-      if (exception == null ||
-          exception.toString().contains('SocketException')) {
-        setState(() => _isLoading = false);
-        throw Exception("Network Error");
-      } else if (exception.type == DioErrorType.receiveTimeout ||
-          exception.type == DioErrorType.connectTimeout) {
-        setState(() => _isLoading = false);
-        throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
-      } else {
-        return null;
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+    String defaultFontFamily = 'EBGaramond-Regular.ttf';
+    double defaultFontSize = 14;
+    double defaultIconSize = 17;
     return Scaffold(
 
       appBar: AppBar(
@@ -291,6 +324,7 @@ class _MapNearestPageState extends State<MapNearest>   with TickerProviderStateM
         child: const Icon(Icons.location_on,),
       ),
       body: Container(
+        height: MediaQuery.of(context).size.height,
 
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -336,14 +370,14 @@ class _MapNearestPageState extends State<MapNearest>   with TickerProviderStateM
                 child:
                 TypeAheadField(
                   textFieldConfiguration: TextFieldConfiguration(
-                    controller:   controller_name,
+                    controller:   controller_direccion,
                     decoration: InputDecoration(
 
                       suffixIcon: IconButton(
                           icon: const Icon(Icons.backspace,
                             color: Colors.orange,),
                           onPressed: () {
-                            controller_name.text='';
+                            controller_direccion.text='';
                           }),
                       prefixIcon: const Icon(Icons.location_on,
                         color: Colors.orange,)
@@ -373,7 +407,7 @@ class _MapNearestPageState extends State<MapNearest>   with TickerProviderStateM
                     );
                   },
                   onSuggestionSelected: (suggestion) {
-                    controller_name.text= (suggestion as Place).address;
+                    controller_direccion.text= (suggestion as Place).address;
                     _set_place_on_map(suggestion);
                     setState(() {
                      //_bus_routes!.clear();
@@ -384,12 +418,269 @@ class _MapNearestPageState extends State<MapNearest>   with TickerProviderStateM
                 ),
               ),
             ),
-            BusList( marker,  bus_routes, _scrollController, marker),
+            Form(
+              key: formKey,
+              child:   Column(
+                children: [
+                    TextFormField(
+                      controller: controller_calle,
+                    keyboardType: TextInputType.text,
+
+                      style: const TextStyle(    fontFamily: "EBGaramond" ),
+                      showCursor: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          borderSide: BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        filled: true,
+                        fillColor: Color(0xFFF2F3F5),
+                        hintStyle: TextStyle(
+                            color: Color(0xFF666666),
+                            fontFamily: defaultFontFamily,
+                            fontSize: defaultFontSize),
+                        hintText: "Referencia",
+                      ),
+                    validator: (val) =>
+                    val!.length == 0 ?"Introduce una referencia" : null,
+                    onSaved: (val) => controller_calle.text = val!,
+                  )
+                  ,
+                  TextFormField(
+                    controller: controller_numInteriro,
+                    keyboardType: TextInputType.text,
+
+                    style: const TextStyle(    fontFamily: "EBGaramond" ),
+                    showCursor: true,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Color(0xFFF2F3F5),
+                      hintStyle: TextStyle(
+                          color: Color(0xFF666666),
+                          fontFamily: defaultFontFamily,
+                          fontSize: defaultFontSize),
+                      hintText: "Número de casa",
+                    ),
+                    validator: (val) =>
+                    val!.length == 0 ?"Introduce un número de casa" : null,
+                    onSaved: (val) => controller_numInteriro.text = val!,
+                  )
+                  ,
+                  TextFormField(
+                    controller: controller_cruzamientos,
+                    keyboardType: TextInputType.text,
+
+                    style: const TextStyle(    fontFamily: "EBGaramond" ),
+                    showCursor: true,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Color(0xFFF2F3F5),
+                      hintStyle: TextStyle(
+                          color: Color(0xFF666666),
+                          fontFamily: defaultFontFamily,
+                          fontSize: defaultFontSize),
+                      hintText: "Cruzamientos",
+                    ),
+                    validator: (val) =>
+                    val!.length == 0 ?"Introduce los cruzamientos" : null,
+                    onSaved: (val) => controller_cruzamientos.text = val!,
+                  )
+                  ,
+                  TextFormField(
+                    controller: controller_colonia,
+                    keyboardType: TextInputType.text,
+
+                    style: const TextStyle(    fontFamily: "EBGaramond" ),
+                    showCursor: true,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Color(0xFFF2F3F5),
+                      hintStyle: TextStyle(
+                          color: Color(0xFF666666),
+                          fontFamily: defaultFontFamily,
+                          fontSize: defaultFontSize),
+                      hintText: "Colonia",
+                    ),
+                    validator: (val) =>
+                    val!.length == 0 ?"Introduce nombre de colonia" : null,
+                    onSaved: (val) => controller_colonia.text = val!,
+                  )
+                  ,
+                  TextFormField(
+                    controller: controller_referencia,
+                    keyboardType: TextInputType.text,
+
+                    style: const TextStyle(    fontFamily: "EBGaramond" ),
+                    showCursor: true,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Color(0xFFF2F3F5),
+                      hintStyle: TextStyle(
+                          color: Color(0xFF666666),
+                          fontFamily: defaultFontFamily,
+                          fontSize: defaultFontSize),
+                      hintText: "Referencias",
+                    ),
+                    validator: (val) =>
+                    val!.length == 0 ?"Introduce una referencia" : null,
+                    onSaved: (val) => controller_referencia.text = val!,
+                  )
+                  ,
+                  TextFormField(
+                    controller: controller_numExterior,
+                    keyboardType: TextInputType.text,
+                    style: const TextStyle(    fontFamily: "EBGaramond" ),
+                    showCursor: true,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Color(0xFFF2F3F5),
+                      hintStyle: TextStyle(
+                          color: Color(0xFF666666),
+                          fontFamily: defaultFontFamily,
+                          fontSize: defaultFontSize),
+                      hintText: "Número exterior",
+                    ),
+
+                    onSaved: (val) => controller_numExterior.text = val!,
+                  )
+                  ,
+                  Visibility(
+                    visible: false,
+                    child:
+                    TextFormField(
+                      controller: controller_latitud,
+                      keyboardType: TextInputType.text,
+                      style: const TextStyle(    fontFamily: "EBGaramond" ),
+                      showCursor: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          borderSide: BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        filled: true,
+                        fillColor: Color(0xFFF2F3F5),
+                        hintStyle: TextStyle(
+                            color: Color(0xFF666666),
+                            fontFamily: defaultFontFamily,
+                            fontSize: defaultFontSize),
+                        hintText: "Latitud",
+                      ),
+                      validator: (val) =>
+                      val!.length == 0 ?"Seleccione un punto en el mapa" : null,
+                      onSaved: (val) => controller_latitud.text = val!,
+                    )
+                    ,
+                  ),
+                  Visibility(
+                    visible: false,
+                      child:
+                      TextFormField(
+                        controller: controller_longitud,
+                        keyboardType: TextInputType.text,
+                        showCursor: true,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            ),
+                          ),
+                          filled: true,
+                          fillColor: Color(0xFFF2F3F5),
+                          hintStyle: TextStyle(
+                              color: Color(0xFF666666),
+                              fontFamily: defaultFontFamily,
+                              fontSize: defaultFontSize),
+                          hintText: "Longitud",
+                        ),
+                        validator: (val) =>
+                        val!.length == 0 ?"Seleccione un punto en el mapa" : null,
+                        onSaved: (val) => controller_longitud.text = val!,
+                      )
+                    ,
+                  ),
+                  Container(margin: const EdgeInsets.only(top: 10.0),child:   ElevatedButton(onPressed: _submit,
+                    child:   Text('Guardar Dirección'),),)
+
+                ],
+              ),
+            ),
 
           ],
         ),
       ),
     );
+  }
+
+  final formKey =   GlobalKey<FormState>();
+  void _submit() {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+    }else{
+      return;
+    }
+
+    var ua= UAddress( id_direccion:0,     id_cliente: int.parse( currentUser.uuid),     tipoDireccionId: 1,     cruzamientos: controller_cruzamientos.text,     numInteriro: controller_numInteriro.text,
+      numExterior: controller_numExterior.text,     referencia: controller_referencia.text,
+
+      calle:controller_calle.text,     direccion:controller_direccion.text,     colonia:controller_colonia.text,     latitud:controller_latitud.text,     longitud:controller_longitud.text,  );
+    postDireccion(ua);
+
+  }
+
+  void _showSnackBar(String text) {
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content:   Text(text),
+      duration: const Duration(seconds: 2),
+      action: SnackBarAction(
+        label: 'OK',
+        onPressed: () {
+          Navigator.of(context).pop();},
+      ),
+    ));
   }
 
   void _animatedMapMove(LatLng destLocation, double destZoom)  {

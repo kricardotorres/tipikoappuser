@@ -42,8 +42,8 @@ class _LoginWithRestfulApiState extends State<LoginWithRestfulApi> {
     final email = 'email';
     final uuid = 'uuid';
     final client = 'client';
-    print(user.client);
-    print(user.access_token);
+    print(user );
+    print(user );
     prefs.setString(key, user.access_token);
     prefs.setString(email, user.email);
     prefs.setString(uuid, user.uuid);
@@ -89,7 +89,7 @@ class _LoginWithRestfulApiState extends State<LoginWithRestfulApi> {
         print(responseJs['Cuerpo']['usuario']['Usuario'] );
         responseJson =   {"access_token": responseJs['Cuerpo']['access_token'],
           "client": responseJs['Cuerpo']['usuario']['Usuario'],
-          "uuid": responseJs['Cuerpo']['access_token'] ,"Usuario" : responseJs['Cuerpo']['usuario']['Usuario']}; //access-token client uuid
+          "uuid": responseJs['Cuerpo']['usuario']['id'].toString(),"Usuario" : responseJs['Cuerpo']['usuario']['Usuario']}; //access-token client uuid
 
 
         return  responseJson;

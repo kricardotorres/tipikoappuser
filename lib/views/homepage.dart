@@ -9,9 +9,7 @@ import 'package:tipiko_app_usr/data/category.dart';
 import 'package:tipiko_app_usr/data/product.dart';
 import 'package:tipiko_app_usr/data/restaurant.dart';
 import 'package:tipiko_app_usr/views/homepage_2.dart';
-import 'package:tipiko_app_usr/widgets/BestFoodWidget.dart';
 import 'package:tipiko_app_usr/widgets/BottomNavBarWidget.dart';
-import 'package:tipiko_app_usr/widgets/FoodlistWidget.dart';
 import 'package:tipiko_app_usr/widgets/PopularFoodsWidget.dart';
 import 'package:tipiko_app_usr/widgets/TopMenus.dart';
 

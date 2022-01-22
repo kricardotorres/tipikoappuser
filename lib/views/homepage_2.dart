@@ -34,7 +34,6 @@ class _HomePageCategoryState extends State<HomePageCategory> {
   @override
   void initState() {
     super.initState();
-    _getRoutes();
 
     for (int i = 0; i < widget.restaurant!.productos!.length; i++)  {
       var prjson_ooduct=   widget.restaurant!.productos![i];
@@ -49,12 +48,6 @@ class _HomePageCategoryState extends State<HomePageCategory> {
           Precio :prjson_ooduct['Precio']));
 
     }
-  }
-  _getRoutes( ) async {
-    setState(() {
-    });
-
-
   }
 
   late Future<List<Product?>>   products ;

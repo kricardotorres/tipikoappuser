@@ -15,7 +15,7 @@ class JsonUser {
       email: json['Usuario'],
       access_token: json['access_token'],
       client: json['access_token'],
-      uuid: json['access_token'],
+      uuid: json['uuid'],
     );
   }
 }

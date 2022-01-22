@@ -20,7 +20,7 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
 
         print("aaaaaaaaaaaaaaaaaaaa-----------");
         print(index);
-        if (index == 1) Navigator.push(context, ScaleRoute(page:  MapNearest(title: 'Ruta cercana', passed_Location : ({  "latitude": 20.966791,   'longitude': -89.623675}))));
+        if (index == 1) Navigator.push(context, ScaleRoute(page:  MapNearest(title: 'Ruta cercana', passed_Location : ({  "latitude": 20.96664072305195,   'longitude': -89.623675}))));
         if (index == 2) Navigator.push(context, ScaleRoute(page:FoodOrderPage()
         ));
         if (index == 3) Navigator.push(context, ScaleRoute(page: FoodOrderPage()));

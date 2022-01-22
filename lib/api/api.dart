@@ -1,11 +1,19 @@
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:tipiko_app_usr/data/place.dart';
+import 'package:tipiko_app_usr/data/u_address.dart';
 
 const baseUrl = "http://ec2-3-16-169-49.us-east-2.compute.amazonaws.com/tipikodev/api";
 
 class Api {
 
 
+  static Future postAddres(UAddress ? uaddress ) {
+    var url = baseUrl + "/Cliente/AgregarModificarDireccion" ;
+
+
+    return http.post(Uri.parse(url), body: uaddress!.toMap());
+  }
 
   static Future getCategories( ) {
     var url = baseUrl + "/Negocio/ObtenerCategorias" ;
