@@ -42,8 +42,6 @@ class _LoginWithRestfulApiState extends State<LoginWithRestfulApi> {
     final email = 'email';
     final uuid = 'uuid';
     final client = 'client';
-    print(user );
-    print(user );
     prefs.setString(key, user.access_token);
     prefs.setString(email, user.email);
     prefs.setString(uuid, user.uuid);
@@ -84,9 +82,6 @@ class _LoginWithRestfulApiState extends State<LoginWithRestfulApi> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         var responseJs=json.decode(response.data) ;
         var responseJson ;
-        print( json.decode(response.data) );
-        print(responseJs['Cuerpo']['access_token'] );
-        print(responseJs['Cuerpo']['usuario']['Usuario'] );
         responseJson =   {"access_token": responseJs['Cuerpo']['access_token'],
           "client": responseJs['Cuerpo']['usuario']['Usuario'],
           "uuid": responseJs['Cuerpo']['usuario']['id'].toString(),"Usuario" : responseJs['Cuerpo']['usuario']['Usuario']}; //access-token client uuid
@@ -281,7 +276,7 @@ class _LoginWithRestfulApiState extends State<LoginWithRestfulApi> {
     _save(user);
     Navigator.of(context).pushReplacement(MaterialPageRoute<Null>(
     builder: (BuildContext context) {
-    return new HomePage(  );
+    return HomePage(  );
     }));
     } else {
     Scaffold.of(context).showSnackBar(

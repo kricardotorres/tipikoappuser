@@ -4,7 +4,7 @@ import 'product.dart';
 class Restaurant {
 int id_negocio;
 String Nombres, Direccion, Telefono,
-UrlImagen ;
+UrlImagen, latitude, longitude ;
 
 
 var productos   ;
@@ -16,6 +16,8 @@ required  this.Direccion,
 required  this.Telefono,
 required  this.UrlImagen,
     required  this.productos,
+  required  this.latitude,
+  required  this.longitude,
 });
 
 Map<String, dynamic> toMap() {
@@ -26,6 +28,8 @@ var map = <String, dynamic>{
 "Telefono": Telefono,
 "UrlImagen": UrlImagen,
     "productos": productos,
+  "latitud": latitude,
+  "longitud": longitude,
 };
 return map;
 }
@@ -40,7 +44,9 @@ return Restaurant(
     Direccion : json['Direccion'],
     Telefono : json['Telefono'].toString(),
     UrlImagen : json['UrlImagen'],
-    productos:   json['ListaProductos']
+    productos:   json['ListaProductos'],
+  latitude : json['latitud'],
+  longitude : json['longitud'],
 );
 }
 
@@ -55,7 +61,9 @@ factory  Restaurant.fromJson2(Map<String, dynamic> parsedJson) {
       Direccion : "",
       Telefono : "",
       UrlImagen : json['UrlImagen'],
-      productos:   json['ListaProductos']
+      productos:   json['ListaProductos'],
+    latitude : json['latitud'],
+    longitude : json['longitud'],
   );
 }
 

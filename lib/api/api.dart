@@ -7,7 +7,15 @@ const baseUrl = "http://ec2-3-16-169-49.us-east-2.compute.amazonaws.com/tipikode
 
 class Api {
 
+  static Future getprecioenvio(String distance ) {
+    var url = baseUrl + "/Negocio/CalculaPrecioEsquema?km_calculado="+distance ;
+    return http.get(Uri.parse(url));
+  }
 
+  static Future getUAddresses(int user_d ) {
+    var url = baseUrl + "/Cliente/DireccionesCliente?id_cliente="+user_d.toString() ;
+    return http.get(Uri.parse(url));
+  }
   static Future postAddres(UAddress ? uaddress ) {
     var url = baseUrl + "/Cliente/AgregarModificarDireccion" ;
 

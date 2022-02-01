@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tipiko_app_usr/animation/RotationRoute.dart';
 import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
 import 'package:tipiko_app_usr/data/product.dart';
 import 'package:tipiko_app_usr/pages/food_details_page.dart';
+
+import '../cart_bloc.dart';
 //import 'package:tipiko_app_usr/pages/FoodDetailsPage.dart';
 
 class PopularFoodsWidget extends StatefulWidget {
@@ -122,6 +125,11 @@ class PopularFoodTiles extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+
+
+        final bloc = Provider.of<Cart>(context, listen: false);
+        if (bloc.itemCount>0){
+          bloc.clear();}
          Navigator.push(context, ScaleRoute(page: FoodDetailsPage( product : product  )));
       },
       child: Column(

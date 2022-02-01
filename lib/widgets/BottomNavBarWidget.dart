@@ -3,9 +3,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
 import 'package:tipiko_app_usr/pages/food_order_page.dart';
 import 'package:tipiko_app_usr/pages/nearest_location.dart';
+import 'package:tipiko_app_usr/views/UAdresslist.dart';
 import 'package:tipiko_app_usr/views/homepage.dart';
 
 class BottomNavBarWidget extends StatefulWidget {
+  var user_id;
+  BottomNavBarWidget({required this.user_id   });
+
   @override
   _BottomNavBarWidgetState createState() => _BottomNavBarWidgetState();
 }
@@ -18,9 +22,14 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
       setState(() {
         _selectedIndex = index;
 
-        print("aaaaaaaaaaaaaaaaaaaa-----------");
-        print(index);
-        if (index == 1) Navigator.push(context, ScaleRoute(page:  MapNearest(title: 'Ruta cercana', passed_Location : ({  "latitude": 20.96664072305195,   'longitude': -89.623675}))));
+        //if (index == 1) {Navigator.push(context, ScaleRoute(page:  MapNearest(title: 'Ruta cercana', passed_Location : ({  "latitude": 20.96664072305195,   'longitude': -89.623675}))));};
+        if (index == 1) {if(widget.user_id==0){
+
+        }else{
+          Navigator.push(context, ScaleRoute(page: UAddresslistview(widget.user_id)));
+        }
+
+        };
         if (index == 2) Navigator.push(context, ScaleRoute(page:FoodOrderPage()
         ));
         if (index == 3) Navigator.push(context, ScaleRoute(page: FoodOrderPage()));
@@ -44,21 +53,21 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
         BottomNavigationBarItem(
           icon: Icon(Icons.near_me),
           title: Text(
-            'Near By',
+            'Direcciones',
             style: TextStyle(color: Color(0xFF2c2b2b)),
           ),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.card_giftcard),
           title: Text(
-            'Cart',
+            'Carrito',
             style: TextStyle(color: Color(0xFF2c2b2b)),
           ),
         ),
         BottomNavigationBarItem(
           icon: Icon(FontAwesomeIcons.user),
           title: Text(
-            'Account',
+            'Mi cuenta',
             style: TextStyle(color: Color(0xFF2c2b2b)),
           ),
         ),

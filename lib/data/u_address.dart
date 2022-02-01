@@ -58,22 +58,21 @@ class UAddress  {
   factory  UAddress.fromJson(Map<String, dynamic> parsedJson) {
     Map json = parsedJson ;
 
-
     return UAddress(
 
 
-        id_direccion:  json['id_direccion'] ,
-        id_cliente:  json['id_cliente'] ,
-        tipoDireccionId:  json['tipoDireccionId'] ,
-        cruzamientos:  json['cruzamientos'] ,
-        numInteriro:  json['numInteriro'] ,
-        numExterior:  json['numExterior'] ,
-        referencia:  json['referencia'] ,
-        calle:  json['calle'] ,
-        direccion:  json['direccion'] ,
-        colonia:  json['colonia'] ,
-        latitud: json['latitud'] ,
-        longitud : json['longitud']
+        id_direccion:  json['id_direccion'] ?? "" ,
+        id_cliente:  json['id_cliente'] ?? "" ,
+        tipoDireccionId:  json['tipoDireccionId'] ?? "" ,
+        cruzamientos:  json['cruzamientos'] ?? "" ,
+        numInteriro:  json['numInteriro'] ?? "" ,
+        numExterior:  json['numExterior'] ?? "",
+        referencia:  json['referencia'] ?? "" ,
+        calle:  json['calle'] ?? "",
+        direccion:   json['nombre'] ?? ""  ,
+        colonia:   json['colonia'] ?? ""  ,
+        latitud: json['latitud'] ?? "" ,
+        longitud : json['longitud'] ?? ""
     );
   }
 

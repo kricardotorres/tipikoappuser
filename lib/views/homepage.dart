@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
 import 'package:tipiko_app_usr/api/api.dart';
 import 'package:tipiko_app_usr/data/category.dart';
@@ -13,6 +14,7 @@ import 'package:tipiko_app_usr/widgets/BottomNavBarWidget.dart';
 import 'package:tipiko_app_usr/widgets/PopularFoodsWidget.dart';
 import 'package:tipiko_app_usr/widgets/TopMenus.dart';
 
+import 'UAdresslist.dart';
 import 'json_restful_api.dart';
 class HomePage extends StatefulWidget {
   @override
@@ -22,11 +24,36 @@ class _HomePageState extends State<HomePage> {
   var currentLocation;
 
 
+  var cliend_dir_id;
+  var client_id;
+  String client_direccion=" ";
 
   Location location = Location();
   @override
   void initState() {
     super.initState();
+
+
+    print("1------");
+    bool _testValueAddress=false;
+    var sharedPreferences;
+    SharedPreferences.getInstance().then((SharedPreferences sp) {
+      sharedPreferences = sp;
+      String client_address = 'client_address';
+      String client_direccion_ = 'client_direccion';
+      String uuid =  'uuid';
+      print("2------");
+      cliend_dir_id= sharedPreferences.get(client_address).toString();
+      client_id= sharedPreferences.get(uuid).toString();
+      client_direccion= sharedPreferences.get(client_direccion_).toString();
+      print(cliend_dir_id+ client_id);
+      print("3-----");
+      if(cliend_dir_id== "null"&&client_id!="null"){
+        Navigator.push(context, ScaleRoute(page: UAddresslistview(int.parse(client_id))));
+      }
+
+    });
+
     location.onLocationChanged.listen((value) {
       setState(() {
         currentLocation = value  ;
@@ -133,12 +160,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFFAFAFA),
         elevation: 0,
         title: Text(
-          "What would you like to eat?",
+          "Bienvenido!",
           style: TextStyle(
               color: Color(0xFF3a3737),
               fontSize: 16,
@@ -228,7 +257,8 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBarWidget(),
+      bottomNavigationBar:  client_id==null ? null:BottomNavBarWidget(user_id: int.parse(client_id))
+      ,
     );
   }
 }
