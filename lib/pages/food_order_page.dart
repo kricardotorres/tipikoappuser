@@ -1,6 +1,15 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
+import 'package:tipiko_app_usr/api/api.dart';
+import 'package:tipiko_app_usr/data/price_scheme.dart';
+import 'package:tipiko_app_usr/data/restaurant.dart';
+import 'package:tipiko_app_usr/views/UAdresslist.dart';
 
 import '../cart_bloc.dart';
 class FoodOrderPage extends StatefulWidget {
@@ -11,10 +20,125 @@ class FoodOrderPage extends StatefulWidget {
 class _FoodOrderPageState extends State<FoodOrderPage> {
   int counter = 3;
 
+  var restaurant;
+  double totalDistance = 0;
+  @override
+  void initState() {
+    super.initState();
+
+
+  }
+
+
+
+  _getRoutes(String distancia ) async {
+    setState(() {
+      priceSchemes= getPriceSchemes(distancia) as Future<List<PriceScheme>>;
+    });
+
+
+  }
+
+  Future<List<PriceScheme>> getPriceSchemes(String distancia ) async {
+
+    Api.getprecioenvio(distancia).then((response) {
+      setState(() {
+        var json_o = json.decode(response.body);
+        var ctg= PriceScheme.fromJson(json_o['Cuerpo']);
+        current_esquema=ctg.precio.toString();
+        _priceSchemes!.add(ctg);
+      });
+    });
+    return _priceSchemes;
+  }
+
+  _getRestaurant(String restaurantid ) async {
+    setState(() {
+      restaurants= getRestaurants(restaurantid) as Future<List<Restaurant>>;
+    });
+
+
+  }
+
+  Future<List<Restaurant>> getRestaurants(String idrestaurant ) async {
+
+    Api.getrestaurantdata(idrestaurant).then((response) {
+      setState(() {
+        var json_o = json.decode(response.body);
+        var ctg= Restaurant.fromJson3(json_o['Cuerpo']);
+         restaurant=ctg ;
+        _restaurants!.add(ctg);
+      });
+    });
+    return _restaurants;
+  }
+  Future<List<Restaurant>>? restaurants;
+  List<Restaurant> _restaurants = [];
+  Future<List<PriceScheme>>? priceSchemes;
+  List<PriceScheme> _priceSchemes = [];
+  var cliend_dir_id;
+  var client_id;
+  String current_esquema="";
+  String client_direccion=" ";
+  double calculateDistance(lat1, lon1, lat2, lon2){
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 - c((lat2 - lat1) * p)/2 +
+        c(lat1 * p) * c(lat2 * p) *
+            (1 - c((lon2 - lon1) * p))/2;
+    return 12742 * asin(sqrt(a));
+  }
+
+
   @override
   Widget build(BuildContext context) {
 
     final cart = Provider.of<Cart>(context);
+    if(cart.items.values.toList()[0]!=null){
+
+
+    _getRestaurant(cart.items.values.toList()[0].store_id.toString());
+
+    var sharedPreferences;
+    SharedPreferences.getInstance().then((SharedPreferences sp) {
+      sharedPreferences = sp;
+      String client_address = 'client_address';
+      String client_direccion_ = 'client_direccion';
+
+      String client_latitud = 'client_latitud';
+      String client_longitud = 'client_longitud';
+      String uuid =  'uuid';
+      print("2------");
+      var current_lat=sharedPreferences.get(client_latitud).toString();
+      var current_lng=sharedPreferences.get(client_longitud).toString();
+      cliend_dir_id= sharedPreferences.get(client_address).toString();
+      client_id= sharedPreferences.get(uuid).toString();
+      client_direccion= sharedPreferences.get(client_direccion_).toString();
+      print(cliend_dir_id+ client_id);
+      print("3-----");
+      if(cliend_dir_id== "null"&&client_id!="null"){
+        Navigator.push(context, ScaleRoute(page: UAddresslistview(int.parse(client_id))));
+      }else{
+        List<dynamic> data = [
+          {
+            "lat": double.parse(current_lat),
+            "lng": double.parse(current_lng)
+          },{
+            "lat": double.parse(restaurant!.latitude),
+            "lng": double.parse(restaurant!.longitude)
+          } ,
+        ];
+        print(data);
+        for(var i = 0; i < data.length-1; i++){
+          totalDistance += calculateDistance(data[i]["lat"], data[i]["lng"], data[i+1]["lat"], data[i+1]["lng"]);
+        }
+        _getRoutes(  (totalDistance*1000).toStringAsFixed(0) );
+        print(totalDistance);}
+    });
+    }
+
+
+
 
     return Scaffold(
         appBar: AppBar(
@@ -74,6 +198,7 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                       price: cart.items.values.toList()[i].price,
                       quantity: cart.items.values.toList()[i].quantity,
                       title: cart.items.values.toList()[i].title,
+                      restaurant_id: cart.items.values.toList()[i].store_id,
                     ),
                   ),
                 ),
@@ -272,6 +397,7 @@ class CartItem extends StatelessWidget {
   final String title;
   final double price;
   final int quantity;
+  final int restaurant_id;
 
   const CartItem({
     required this.id,
@@ -279,6 +405,7 @@ class CartItem extends StatelessWidget {
     required this.price,
     required this.quantity,
     required this.productId,
+    required this.restaurant_id,
   });
 
   @override
@@ -340,7 +467,7 @@ class CartItem extends StatelessWidget {
                 ),
               ),
             ),
-            title: Text(title),
+            title: Text(title ),
             subtitle: Text('Total: \$${price * quantity}'),
             trailing: Text('$quantity x'),
           ),

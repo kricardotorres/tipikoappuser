@@ -9,8 +9,9 @@ class  FoodsWidget extends StatefulWidget {
 
    var   products;
 
+   int restaurant_id;
 
-  FoodsWidget( this.products );
+  FoodsWidget( this.products, this.restaurant_id );
 
 
 
@@ -40,7 +41,7 @@ class _FoodsWidgetState extends State<FoodsWidget> {
                 numberOfRating: "",
                 price: products[index].Precio.toString(),
                 slug: "",
-                product: products[index]
+                product: products[index], restaurant_id: widget.restaurant_id,
             );
 
 
@@ -88,6 +89,7 @@ class PopularFoodTiles extends StatelessWidget {
   String price;
   String slug;
   Product product;
+  int restaurant_id;
 
   PopularFoodTiles(
       {
@@ -98,14 +100,16 @@ class PopularFoodTiles extends StatelessWidget {
         required this.price,
         required this.slug,
 
-        required this.product})
+        required this.product,
+
+        required this.restaurant_id})
   ;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, ScaleRoute(page: FoodDetailsPage( product : product  )));
+        Navigator.push(context, ScaleRoute(page: FoodDetailsPage( product : product , restaurant_id: restaurant_id, )));
       },
       child: Column(
         children: <Widget>[

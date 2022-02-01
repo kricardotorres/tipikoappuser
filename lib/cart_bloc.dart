@@ -5,12 +5,14 @@ class CartItem {
   final String title;
   final int quantity;
   final double price;
+  final int store_id;
 
   CartItem({
      required this.id,
     required this.title,
      required this.quantity,
-     required this.price,
+    required this.price,
+    required this.store_id,
   });
 }
 
@@ -33,7 +35,7 @@ class Cart with ChangeNotifier {
     return total;
   }
 
-  void addItem(String productId, double price, String title) {
+  void addItem(String productId, double price, String title, int store_id) {
     if (_items.containsKey(productId)) {
       _items.update(
         productId,
@@ -42,6 +44,7 @@ class Cart with ChangeNotifier {
           title: existingValue.title,
           price: existingValue.price,
           quantity: existingValue.quantity + 1,
+              store_id: existingValue.store_id   ,
         ),
       );
       print(_items);
@@ -53,6 +56,7 @@ class Cart with ChangeNotifier {
           price: price,
           title: title,
           quantity: 1,
+              store_id: store_id,
         ),
       );
       print(_items);
@@ -77,6 +81,7 @@ class Cart with ChangeNotifier {
           title: existingCartItem.title,
           price: existingCartItem.price,
           quantity: existingCartItem.quantity - 1,
+              store_id: existingCartItem.store_id,
         ),
       );
     } else {

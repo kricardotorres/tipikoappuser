@@ -250,7 +250,7 @@ class _HomePageState extends State<HomePage> {
         )*/
       ),
             TopMenus(categories ,_scrollController),
-            PopularFoodsWidget(productos_promotion ,_scrollController),
+            PopularFoodsWidget(productos_promotion ,_scrollController,0),
 
             //FoodsWidget(productos_promotion  ),
 

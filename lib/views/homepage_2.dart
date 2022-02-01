@@ -221,7 +221,7 @@ class _HomePageCategoryState extends State<HomePageCategory> {
         child: Column(
           children: <Widget>[
 
-            FoodsWidget(_stproducts   ),
+            FoodsWidget(_stproducts,widget.restaurant!.id_negocio   ),
 
 
           ],

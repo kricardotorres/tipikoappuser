@@ -11,6 +11,10 @@ class Api {
     var url = baseUrl + "/Negocio/CalculaPrecioEsquema?km_calculado="+distance ;
     return http.get(Uri.parse(url));
   }
+  static Future getrestaurantdata(String idrestaurant ) {
+    var url = baseUrl + "/Negocio/ObtenerNegocioXId?id_negocio="+idrestaurant ;
+    return http.get(Uri.parse(url));
+  }
 
   static Future getUAddresses(int user_d ) {
     var url = baseUrl + "/Cliente/DireccionesCliente?id_cliente="+user_d.toString() ;

@@ -19,8 +19,9 @@ import 'food_order_page.dart';
 class FoodDetailsPage extends StatefulWidget {
 
   Product?  product;
+  int restaurant_id;
 
-  FoodDetailsPage( {this.product } );
+  FoodDetailsPage( {this.product, required this.restaurant_id } );
 
 
 
@@ -138,7 +139,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
 
                         for (int i = 0; i <_counter; i++) {
 
-                          bloc.addItem(widget.product!.id_producto.toString(), double.parse(widget.product!.Precio.toString()),widget.product!.nombreProducto.toString());
+                          bloc.addItem(widget.product!.id_producto.toString(), double.parse(widget.product!.Precio.toString()),widget.product!.nombreProducto.toString(),  widget.restaurant_id );
 
                         }
                         Navigator.push(

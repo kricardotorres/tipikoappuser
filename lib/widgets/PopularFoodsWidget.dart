@@ -13,8 +13,9 @@ class PopularFoodsWidget extends StatefulWidget {
   Future<List<Product>>? products;
 
   late final ScrollController scrollController ;
+  int restaurant_id;
 
-  PopularFoodsWidget( this.products, this.scrollController );
+  PopularFoodsWidget( this.products, this.scrollController, this.restaurant_id );
 
 
 
@@ -128,9 +129,9 @@ class PopularFoodTiles extends StatelessWidget {
 
 
         final bloc = Provider.of<Cart>(context, listen: false);
-        if (bloc.itemCount>0){
-          bloc.clear();}
-         Navigator.push(context, ScaleRoute(page: FoodDetailsPage( product : product  )));
+       // if (bloc.itemCount>0){
+        //  bloc.clear();}
+       //  Navigator.push(context, ScaleRoute(page: FoodDetailsPage( product : product, restaurant_id: ,  )));
       },
       child: Column(
         children: <Widget>[
