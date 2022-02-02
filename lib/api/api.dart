@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tipiko_app_usr/data/place.dart';
 import 'package:tipiko_app_usr/data/u_address.dart';
@@ -7,6 +8,24 @@ const baseUrl = "http://ec2-3-16-169-49.us-east-2.compute.amazonaws.com/tipikode
 
 class Api {
 
+  static Future postConfirmarEstatusPedido(var usercart ) {
+    var url = baseUrl + "/Negocio/ConfirmarEstatusPedido" ;
+    var aaa= http.post(Uri.parse(url),
+        headers: {"Content-Type": "application/json"}, body:   (usercart)  );
+
+    return aaa;
+  }
+  static Future postLastCart(var usercart ) {
+    var url = baseUrl + "/Negocio/RealizarPedido" ;
+    var aaa= http.post(Uri.parse(url),
+        headers: {"Content-Type": "application/json"}, body:   (usercart)  );
+
+    return aaa;
+  }
+  static Future getLastCart(String idcliente ) {
+    var url = baseUrl + "/Negocio/ConsultaUltimoPedido?id_cliente="+idcliente ;
+    return http.get(Uri.parse(url));
+  }
   static Future getprecioenvio(String distance ) {
     var url = baseUrl + "/Negocio/CalculaPrecioEsquema?km_calculado="+distance ;
     return http.get(Uri.parse(url));

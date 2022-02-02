@@ -50,7 +50,7 @@ class _HomePageCategoryState extends State<HomePageCategory> {
           fechaInicioPromocion : "",
           fechaFinPromocion : "",
           Activo:  true,
-          Precio :prjson_ooduct['Precio']));
+          Precio :prjson_ooduct['Precio'], restaurant_id: widget.restaurant!.id_negocio));
 
     }
 

@@ -129,9 +129,9 @@ class PopularFoodTiles extends StatelessWidget {
 
 
         final bloc = Provider.of<Cart>(context, listen: false);
-       // if (bloc.itemCount>0){
-        //  bloc.clear();}
-       //  Navigator.push(context, ScaleRoute(page: FoodDetailsPage( product : product, restaurant_id: ,  )));
+        if (bloc.itemCount>0){
+        bloc.clear();}
+          Navigator.push(context, ScaleRoute(page: FoodDetailsPage( product : product, restaurant_id:   product.restaurant_id )));
       },
       child: Column(
         children: <Widget>[

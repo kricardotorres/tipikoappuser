@@ -27,9 +27,25 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
     super.initState();
 
 
+    Future.delayed(Duration.zero, () {
+
+      final cart = Provider.of<Cart>(context, listen: false);
+      if(cart.items.values.toList()[0]!=null){
+
+
+
+        _getRestaurant(cart.items.values.toList()[0].store_id.toString());
+
+
+      }
+    });
   }
 
+  _FoodOrderPageState(){
 
+
+
+  }
 
   _getRoutes(String distancia ) async {
     setState(() {
@@ -38,7 +54,7 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
 
 
   }
-
+  var seted_schema;
   Future<List<PriceScheme>> getPriceSchemes(String distancia ) async {
 
     Api.getprecioenvio(distancia).then((response) {
@@ -46,6 +62,7 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
         var json_o = json.decode(response.body);
         var ctg= PriceScheme.fromJson(json_o['Cuerpo']);
         current_esquema=ctg.precio.toString();
+        seted_schema=ctg;
         _priceSchemes!.add(ctg);
       });
     });
@@ -53,6 +70,7 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
   }
 
   _getRestaurant(String restaurantid ) async {
+
     setState(() {
       restaurants= getRestaurants(restaurantid) as Future<List<Restaurant>>;
     });
@@ -65,9 +83,47 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
     Api.getrestaurantdata(idrestaurant).then((response) {
       setState(() {
         var json_o = json.decode(response.body);
+        print(json_o['Cuerpo']);
         var ctg= Restaurant.fromJson3(json_o['Cuerpo']);
          restaurant=ctg ;
         _restaurants!.add(ctg);
+        var sharedPreferences;
+        SharedPreferences.getInstance().then((SharedPreferences sp) {
+          sharedPreferences = sp;
+          String client_address = 'client_address';
+          String client_direccion_ = 'client_direccion';
+
+          String client_latitud = 'client_latitud';
+          String client_longitud = 'client_longitud';
+          String uuid =  'uuid';
+          print("2------");
+          var current_lat=sharedPreferences.get(client_latitud).toString();
+          var current_lng=sharedPreferences.get(client_longitud).toString();
+          cliend_dir_id= sharedPreferences.get(client_address).toString();
+          client_id= sharedPreferences.get(uuid).toString();
+          client_direccion= sharedPreferences.get(client_direccion_).toString();
+          print(cliend_dir_id+ client_id);
+          print("3-----");
+          if(cliend_dir_id== "null"&&client_id!="null"){
+            Navigator.push(context, ScaleRoute(page: UAddresslistview(int.parse(client_id))));
+          }else{
+            List<dynamic> data = [
+              {
+                "lat": double.parse(current_lat),
+                "lng": double.parse(current_lng)
+              },{
+                "lat": double.parse(restaurant!.latitude),
+                "lng": double.parse(restaurant!.longitude)
+              } ,
+            ];
+            print(data);
+            for(var i = 0; i < data.length-1; i++){
+              totalDistance += calculateDistance(data[i]["lat"], data[i]["lng"], data[i+1]["lat"], data[i+1]["lng"]);
+            }
+            _getRoutes(  (totalDistance*1000).toStringAsFixed(0) );
+            print(totalDistance);}
+        });
+
       });
     });
     return _restaurants;
@@ -78,7 +134,7 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
   List<PriceScheme> _priceSchemes = [];
   var cliend_dir_id;
   var client_id;
-  String current_esquema="";
+  String current_esquema="0";
   String client_direccion=" ";
   double calculateDistance(lat1, lon1, lat2, lon2){
     var p = 0.017453292519943295;
@@ -89,53 +145,25 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
     return 12742 * asin(sqrt(a));
   }
 
+  void _showSnackBar(String text) {
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content:   Text(text),
+      duration: const Duration(seconds: 10),
+      action: SnackBarAction(
+        label: 'OK',
+        onPressed: () {
+         },
+      ),
+    ));
+  }
+
 
   @override
   Widget build(BuildContext context) {
 
     final cart = Provider.of<Cart>(context);
-    if(cart.items.values.toList()[0]!=null){
 
-
-    _getRestaurant(cart.items.values.toList()[0].store_id.toString());
-
-    var sharedPreferences;
-    SharedPreferences.getInstance().then((SharedPreferences sp) {
-      sharedPreferences = sp;
-      String client_address = 'client_address';
-      String client_direccion_ = 'client_direccion';
-
-      String client_latitud = 'client_latitud';
-      String client_longitud = 'client_longitud';
-      String uuid =  'uuid';
-      print("2------");
-      var current_lat=sharedPreferences.get(client_latitud).toString();
-      var current_lng=sharedPreferences.get(client_longitud).toString();
-      cliend_dir_id= sharedPreferences.get(client_address).toString();
-      client_id= sharedPreferences.get(uuid).toString();
-      client_direccion= sharedPreferences.get(client_direccion_).toString();
-      print(cliend_dir_id+ client_id);
-      print("3-----");
-      if(cliend_dir_id== "null"&&client_id!="null"){
-        Navigator.push(context, ScaleRoute(page: UAddresslistview(int.parse(client_id))));
-      }else{
-        List<dynamic> data = [
-          {
-            "lat": double.parse(current_lat),
-            "lng": double.parse(current_lng)
-          },{
-            "lat": double.parse(restaurant!.latitude),
-            "lng": double.parse(restaurant!.longitude)
-          } ,
-        ];
-        print(data);
-        for(var i = 0; i < data.length-1; i++){
-          totalDistance += calculateDistance(data[i]["lat"], data[i]["lng"], data[i+1]["lat"], data[i+1]["lng"]);
-        }
-        _getRoutes(  (totalDistance*1000).toStringAsFixed(0) );
-        print(totalDistance);}
-    });
-    }
 
 
 
@@ -153,7 +181,7 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
           ),
           title: Center(
             child: Text(
-              "Productos",
+              "Productos + envio(\$$current_esquema)",
               style: TextStyle(
                   color: Color(0xFF3a3737),
                   fontWeight: FontWeight.w600,
@@ -248,7 +276,7 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                           textAlign: TextAlign.left,
                         ),
                         Chip(
-                          label: Text('\$${cart.totalAmount.toStringAsFixed(2)}',style: TextStyle(
+                          label: Text('\$${(cart.totalAmount+double.parse(current_esquema)).toStringAsFixed(2)}',style: TextStyle(
                               fontSize: 18,
                               color: Colors.red,
                               fontWeight: FontWeight.w600),
@@ -268,7 +296,70 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                 ),
                 InkWell(
                   onTap: () {
+                    if(client_id!=null){
 
+                      Api.getLastCart(client_id).then((response) {
+
+                          var json_o = json.decode(response.body);
+                          print(json_o['Cuerpo']);
+                          Map<String, dynamic> carrito ={ "id_Pedido": json_o['Cuerpo']['id_Pedido'].toString(),
+                            "Negocio": restaurant.id_negocio.toString(),
+                            "Cliente":  json_o['Cuerpo']['Cliente'].toString(),
+                            "id_esquema_cobro": seted_schema.id_esquema.toString(),
+                            "Repartidor": "0",
+                            "id_direccion": cliend_dir_id.toString() ,
+                            "Estatus": "1"};
+                          var user_list=[];
+                          final cart = Provider.of<Cart>(context, listen: false);
+
+                          for(int i=0;i<cart.items.values.toList().length;i++){
+                            Map<String, dynamic> item= {
+
+                              "Id_Pedido_Detalle": 0.toString(),
+                              "Producto":  cart.items.values.toList()[i].id,
+
+                              "Cantidad": cart.items.values.toList()[i].quantity.toString(),
+                            };
+                            user_list.add(item);
+                          }
+
+                          carrito.addAll({"ListaPedidos" :   (user_list)   });
+                          print(json.encode(carrito));
+
+
+                           Api.postLastCart(json.encode(carrito)).then((response) {
+
+                           var json_o = json.decode(response.body);
+                           print("se hizo correctamente?");
+                             print(json_o);
+                             if (json_o['Codigo']==200){
+                               Map<String, dynamic> carrito_confirm ={ "idPedido": json_o['Cuerpo']['id_Pedido'].toString(),
+                                 "id_estatus": "5"};
+                                print(json.encode(carrito_confirm));
+                               Api.postConfirmarEstatusPedido(json.encode(carrito_confirm)).then((response) {
+
+                                 var json_o = json.decode(response.body);
+                                 print("se hizo correctamente?");
+                                 print(json_o);
+                                 if (json_o['Codigo']==200){
+
+                                   _showSnackBar("Pedido creado! En unos momentos el restaurant te confirmará el pedido");
+
+                                   if (cart.itemCount>0){
+                                     cart.clear();}
+                                   Navigator.of(context).pop();
+                                 }else{
+                                   _showSnackBar("Falló :(");
+                                 }
+
+                               });
+                             }
+
+                          });
+
+                      });
+
+                    }
 
                   },
                   child: Container(

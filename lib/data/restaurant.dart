@@ -75,7 +75,7 @@ factory  Restaurant.fromJson3(Map<String, dynamic> parsedJson) {
   return Restaurant(
 
     id_negocio : json['id_negocio'],
-    Nombres : json['NombreNegocio'],
+    Nombres : json['Nombres'],
     Direccion : "",
     Telefono : "",
     UrlImagen : json['UrlImagen'],

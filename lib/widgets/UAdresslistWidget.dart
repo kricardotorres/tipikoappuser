@@ -1,14 +1,10 @@
 
 
-import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tipiko_app_usr/animation/RotationRoute.dart';
-import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
 
 import 'package:tipiko_app_usr/data/u_address.dart';
-import 'package:tipiko_app_usr/pages/food_details_page.dart';
 
 
 class  UAddresList extends StatefulWidget {

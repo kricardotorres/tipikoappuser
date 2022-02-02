@@ -138,7 +138,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
 
 
                         for (int i = 0; i <_counter; i++) {
-
+                          print("AAAII DII:"+ widget.product!.id_producto.toString() );
                           bloc.addItem(widget.product!.id_producto.toString(), double.parse(widget.product!.Precio.toString()),widget.product!.nombreProducto.toString(),  widget.restaurant_id );
 
                         }

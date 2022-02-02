@@ -1,9 +1,12 @@
+
+
 class Product {
   int id_producto;
   String nombreNegocio, nombreProducto, descripcionProducto,
       urlImagenProducto, fechaInicioPromocion, fechaFinPromocion ;
   var Precio;
   bool Activo;
+  int restaurant_id;
 
 
 
@@ -18,6 +21,7 @@ class Product {
     required this.fechaFinPromocion,
     required this.Activo,
     required this.Precio,
+    required this.restaurant_id,
   });
 
   Map<String, dynamic> toMap() {
@@ -30,11 +34,13 @@ class Product {
       "fechaInicioPromocion": fechaInicioPromocion,
       "fechaFinPromocion": fechaFinPromocion,
       "Activo": Activo,
-      "Precio": Precio
+      "Precio": Precio,
+      "id_negocio": restaurant_id
+
     };
     return map;
   }
-  factory  Product.fromJson(Map<String, dynamic> parsedJson) {
+  factory  Product.fromJson(Map<dynamic, dynamic> parsedJson) {
     Map json = parsedJson ;
 
 
@@ -48,7 +54,8 @@ class Product {
         fechaInicioPromocion : json['fechaInicioPromocion'],
         fechaFinPromocion : json['fechaFinPromocion'],
       Activo:  json['Activo'],
-        Precio :json['Precio']
+        Precio :json['Precio'],
+        restaurant_id : json['id_negocio'] ?? 0
     );
   }
   factory  Product.fromJson2(Map<String, dynamic> parsedJson) {
@@ -65,7 +72,8 @@ class Product {
         fechaInicioPromocion : "",
         fechaFinPromocion : "",
         Activo:  true,
-        Precio :json['Precio']
+        Precio :json['Precio'],
+        restaurant_id : json['id_negocio'] ?? 0
     );
   }
 
@@ -85,7 +93,8 @@ class Product {
         fechaInicioPromocion : "",
         fechaFinPromocion : "",
         Activo:  true,
-        Precio :json['Precio']
+        Precio :json['Precio'],
+        restaurant_id : json['id_negocio']  ?? 0
     );
   }
 
