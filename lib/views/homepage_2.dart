@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
@@ -11,15 +10,9 @@ import 'package:tipiko_app_usr/data/category.dart';
 import 'package:tipiko_app_usr/data/price_scheme.dart';
 import 'package:tipiko_app_usr/data/product.dart';
 import 'package:tipiko_app_usr/data/restaurant.dart';
-import 'package:tipiko_app_usr/widgets/BestFoodWidget.dart';
-import 'package:tipiko_app_usr/widgets/BottomNavBarWidget.dart';
 import 'package:tipiko_app_usr/widgets/FoodlistWidget.dart';
-import 'package:tipiko_app_usr/widgets/PopularFoodsWidget.dart';
-import 'package:tipiko_app_usr/widgets/TopMenus.dart';
-
 import '../cart_bloc.dart';
 import 'UAdresslist.dart';
-import 'json_restful_api.dart';
 
 
 class HomePageCategory extends StatefulWidget {
@@ -64,14 +57,13 @@ class _HomePageCategoryState extends State<HomePageCategory> {
       String client_latitud = 'client_latitud';
       String client_longitud = 'client_longitud';
       String uuid =  'uuid';
-      print("2------");
+
       var current_lat=sharedPreferences.get(client_latitud).toString();
       var current_lng=sharedPreferences.get(client_longitud).toString();
       cliend_dir_id= sharedPreferences.get(client_address).toString();
       client_id= sharedPreferences.get(uuid).toString();
       client_direccion= sharedPreferences.get(client_direccion_).toString();
-      print(cliend_dir_id+ client_id);
-      print("3-----");
+
       if(cliend_dir_id== "null"&&client_id!="null"){
         Navigator.push(context, ScaleRoute(page: UAddresslistview(int.parse(client_id))));
       }else{
@@ -84,12 +76,11 @@ class _HomePageCategoryState extends State<HomePageCategory> {
           "lng": double.parse(widget.restaurant!.longitude)
         } ,
       ];
-      print(data);
       for(var i = 0; i < data.length-1; i++){
         totalDistance += calculateDistance(data[i]["lat"], data[i]["lng"], data[i+1]["lat"], data[i+1]["lng"]);
       }
       _getRoutes(  (totalDistance*1000).toStringAsFixed(0) );
-      print(totalDistance);}
+      }
     });
 
 
@@ -203,8 +194,16 @@ class _HomePageCategoryState extends State<HomePageCategory> {
       bloc.clear();}
     return Scaffold(
       appBar: AppBar(
+
         backgroundColor: Color(0xFFFAFAFA),
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color(0xFF3a3737),
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text(
           "Menu del restaurant,  Costo de envío: \$  "+current_esquema ,
           style: TextStyle(

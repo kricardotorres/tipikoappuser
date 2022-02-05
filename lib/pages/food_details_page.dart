@@ -93,13 +93,23 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
             children: <Widget>[
               Card(
                 semanticContainer: true,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: Image.network(widget.product!.urlImagenProducto ,
-                  width: 130,
-                  height: 140,),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(3.0),
-                ),
+                clipBehavior: Clip.antiAliasWithSaveLayer,shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(3.0),
+
+
+
+          ),
+                child: InteractiveViewer(
+
+                  boundaryMargin: EdgeInsets.all(100),
+                  minScale: 0.5,
+                  maxScale: 2,
+                  child: Image.network(widget.product!.urlImagenProducto ,
+
+                    height: MediaQuery.of(context).size.height * 0.30,),
+                )
+
+              ,
                 elevation: 1,
                 margin: EdgeInsets.all(5),
               ),
@@ -138,7 +148,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
 
 
                         for (int i = 0; i <_counter; i++) {
-                          print("AAAII DII:"+ widget.product!.id_producto.toString() );
+
                           bloc.addItem(widget.product!.id_producto.toString(), double.parse(widget.product!.Precio.toString()),widget.product!.nombreProducto.toString(),  widget.restaurant_id );
 
                         }

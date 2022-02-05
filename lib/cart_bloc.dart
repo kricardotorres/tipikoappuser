@@ -47,7 +47,6 @@ class Cart with ChangeNotifier {
               store_id: existingValue.store_id   ,
         ),
       );
-      print(_items);
     } else {
       _items.putIfAbsent(
         productId,
@@ -59,7 +58,6 @@ class Cart with ChangeNotifier {
               store_id: store_id,
         ),
       );
-      print(_items);
     }
     notifyListeners();
   }

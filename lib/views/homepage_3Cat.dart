@@ -43,8 +43,7 @@ class _HomePageCategoryStoresState extends State<HomePageCategoryStores> {
 
 
       categories= getcategoriesRestaurants();
-      print('ahora veremos las categories restaurants aaaaaaaaaagria');
-      //print(categories);
+
     });
 
 
@@ -55,10 +54,10 @@ class _HomePageCategoryStoresState extends State<HomePageCategoryStores> {
     Api.getCategoriesRestaurants(widget.category_id).then((response) {
       setState(() {
         var json_o = json.decode(response.body);
-        print(json_o['Cuerpo']);
+
         if (json_o['Cuerpo'].length > 0) {
           for (int i = 0; i < json_o['Cuerpo'].length; i++) {
-            print(json_o['Cuerpo'][i]);
+
             var ctg= Restaurant.fromJson2(json_o['Cuerpo'][i]);
             _categories!.add(ctg);
 
@@ -66,8 +65,7 @@ class _HomePageCategoryStoresState extends State<HomePageCategoryStores> {
         }
       });
     });
-    print('veamos si se crearon las categoriess');
-    print (_categories);
+
     return _categories;
   }
   Future<List<Restaurant>>? categories;
@@ -88,10 +86,18 @@ class _HomePageCategoryStoresState extends State<HomePageCategoryStores> {
       bloc.clear();}
     return Scaffold(
       appBar: AppBar(
+
         backgroundColor: Color(0xFFFAFAFA),
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color(0xFF3a3737),
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text(
-          "Menu del restaurant",
+          "Menu de categoría",
           style: TextStyle(
               color: Color(0xFF3a3737),
               fontSize: 16,

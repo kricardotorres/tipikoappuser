@@ -40,7 +40,7 @@ class _TopMenusState extends State<TopMenus> {
   SingleChildScrollView dataTable(List<Category> categories) {
     return SingleChildScrollView(
       child: Container(
-          height: double.maxFinite,
+          height: 150,
           child:  ListView.builder(shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemCount: categories.length,
@@ -66,7 +66,7 @@ class _TopMenusState extends State<TopMenus> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
+      height: 160,
       child:ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[

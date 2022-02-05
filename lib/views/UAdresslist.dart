@@ -32,8 +32,7 @@ class _UAddresslistviewState extends State<UAddresslistview> {
   @override
   void initState() {
     super.initState();
-    print("aaaaaaaaaaaaaa");
-    print(widget.user_id);
+
     _getRoutes();
 
   }
@@ -52,7 +51,7 @@ class _UAddresslistviewState extends State<UAddresslistview> {
         var json_o = json.decode(response.body);
         if (json_o['Cuerpo'].length > 0) {
           for (int i = 0; i < json_o['Cuerpo'].length; i++) {
-            print(json_o['Cuerpo'][i]);
+
             var ctg= UAddress.fromJson(json_o['Cuerpo'][i]);
             _uaddresses!.add(ctg);
 
@@ -74,8 +73,16 @@ class _UAddresslistviewState extends State<UAddresslistview> {
   child: const Icon(Icons.add,),
   ),
       appBar: AppBar(
+
         backgroundColor: Color(0xFFFAFAFA),
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color(0xFF3a3737),
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text(
           "Selecciona una dirección",
           style: TextStyle(

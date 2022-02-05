@@ -47,7 +47,7 @@ class _PopularFoodsWidgetState extends State<PopularFoodsWidget> {
   SingleChildScrollView dataTable(List<Product> products) {
     return SingleChildScrollView(
       child: Container(
-        height: double.maxFinite,
+        height: 300,
         child:  ListView.builder(shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemCount: products.length,
@@ -78,7 +78,7 @@ class _PopularFoodsWidgetState extends State<PopularFoodsWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 265,
+      height: 350,
       width: double.infinity,
       child: Column(
         children: <Widget>[

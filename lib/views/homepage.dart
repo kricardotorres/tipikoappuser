@@ -34,7 +34,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
 
-    print("1------");
     bool _testValueAddress=false;
     var sharedPreferences;
     SharedPreferences.getInstance().then((SharedPreferences sp) {
@@ -42,12 +41,11 @@ class _HomePageState extends State<HomePage> {
       String client_address = 'client_address';
       String client_direccion_ = 'client_direccion';
       String uuid =  'uuid';
-      print("2------");
+
       cliend_dir_id= sharedPreferences.get(client_address).toString();
       client_id= sharedPreferences.get(uuid).toString();
       client_direccion= sharedPreferences.get(client_direccion_).toString();
-      print(cliend_dir_id+ client_id);
-      print("3-----");
+
       if(cliend_dir_id== "null"&&client_id!="null"){
         Navigator.push(context, ScaleRoute(page: UAddresslistview(int.parse(client_id))));
       }
@@ -180,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                 Icons.notifications_none,
                 color: Color(0xFF3a3737),
               ),
-                  onPressed: () {Navigator.push(context, ScaleRoute(page: LoginWithRestfulApi()));})
+                  onPressed: () { })
         ],
       ),
       body: SingleChildScrollView(

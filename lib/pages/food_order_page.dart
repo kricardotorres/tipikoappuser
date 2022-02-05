@@ -83,7 +83,7 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
     Api.getrestaurantdata(idrestaurant).then((response) {
       setState(() {
         var json_o = json.decode(response.body);
-        print(json_o['Cuerpo']);
+
         var ctg= Restaurant.fromJson3(json_o['Cuerpo']);
          restaurant=ctg ;
         _restaurants!.add(ctg);
@@ -96,14 +96,13 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
           String client_latitud = 'client_latitud';
           String client_longitud = 'client_longitud';
           String uuid =  'uuid';
-          print("2------");
+
           var current_lat=sharedPreferences.get(client_latitud).toString();
           var current_lng=sharedPreferences.get(client_longitud).toString();
           cliend_dir_id= sharedPreferences.get(client_address).toString();
           client_id= sharedPreferences.get(uuid).toString();
           client_direccion= sharedPreferences.get(client_direccion_).toString();
-          print(cliend_dir_id+ client_id);
-          print("3-----");
+
           if(cliend_dir_id== "null"&&client_id!="null"){
             Navigator.push(context, ScaleRoute(page: UAddresslistview(int.parse(client_id))));
           }else{
@@ -116,12 +115,11 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                 "lng": double.parse(restaurant!.longitude)
               } ,
             ];
-            print(data);
             for(var i = 0; i < data.length-1; i++){
               totalDistance += calculateDistance(data[i]["lat"], data[i]["lng"], data[i+1]["lat"], data[i+1]["lng"]);
             }
             _getRoutes(  (totalDistance*1000).toStringAsFixed(0) );
-            print(totalDistance);}
+            }
         });
 
       });
@@ -301,7 +299,7 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                       Api.getLastCart(client_id).then((response) {
 
                           var json_o = json.decode(response.body);
-                          print(json_o['Cuerpo']);
+
                           Map<String, dynamic> carrito ={ "id_Pedido": json_o['Cuerpo']['id_Pedido'].toString(),
                             "Negocio": restaurant.id_negocio.toString(),
                             "Cliente":  json_o['Cuerpo']['Cliente'].toString(),
@@ -324,23 +322,21 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                           }
 
                           carrito.addAll({"ListaPedidos" :   (user_list)   });
-                          print(json.encode(carrito));
+
 
 
                            Api.postLastCart(json.encode(carrito)).then((response) {
 
                            var json_o = json.decode(response.body);
-                           print("se hizo correctamente?");
-                             print(json_o);
+
                              if (json_o['Codigo']==200){
                                Map<String, dynamic> carrito_confirm ={ "idPedido": json_o['Cuerpo']['id_Pedido'].toString(),
                                  "id_estatus": "5"};
-                                print(json.encode(carrito_confirm));
+
                                Api.postConfirmarEstatusPedido(json.encode(carrito_confirm)).then((response) {
 
                                  var json_o = json.decode(response.body);
-                                 print("se hizo correctamente?");
-                                 print(json_o);
+
                                  if (json_o['Codigo']==200){
 
                                    _showSnackBar("Pedido creado! En unos momentos el restaurant te confirmará el pedido");

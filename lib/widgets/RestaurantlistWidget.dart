@@ -38,7 +38,7 @@ class _RestaurantsFoodsWidgetState extends State<RestaurantsFoodsWidget> {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: restaurants!.length,
           itemBuilder: (context, index) {
-            print('$index');
+
             return  PopularFoodTiles(name: restaurants[index].Nombres, imageUrl: restaurants[index].UrlImagen, rating: "",
                 numberOfRating: "",
                 price: "",
@@ -108,7 +108,7 @@ class PopularFoodTiles extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print('aaaaaaaaaaaaa');
+
 
         Navigator.push(context, ScaleRoute(page: HomePageCategory(  (restaurant as Restaurant))));
       },
