@@ -53,6 +53,8 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
         _counter--;
     });
   }
+  TransformationController controllerT = TransformationController();
+  var initialControllerValue;
   @override
   Widget build(BuildContext context) {
     var bloc = Provider.of<Cart>(context);
@@ -100,10 +102,17 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
 
           ),
                 child: InteractiveViewer(
-
+                  panEnabled: false,
                   boundaryMargin: EdgeInsets.all(100),
                   minScale: 0.5,
                   maxScale: 2,
+                  transformationController: controllerT,
+                  onInteractionStart: (details){
+                    initialControllerValue = controllerT.value;
+                  },
+                  onInteractionEnd: (details){
+                    controllerT.value = initialControllerValue;
+                  },
                   child: Image.network(widget.product!.urlImagenProducto ,
 
                     height: MediaQuery.of(context).size.height * 0.30,),

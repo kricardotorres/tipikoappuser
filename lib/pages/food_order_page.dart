@@ -215,7 +215,8 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
 
 
                 SizedBox(
-                  height: 200,
+
+                  height: MediaQuery.of(context).size.height*.60,
                   child: ListView.builder(
                     itemCount: cart.itemCount,
                     itemBuilder: (context, i) => CartItem(

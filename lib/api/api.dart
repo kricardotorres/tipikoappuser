@@ -39,6 +39,12 @@ class Api {
     var url = baseUrl + "/Cliente/DireccionesCliente?id_cliente="+user_d.toString() ;
     return http.get(Uri.parse(url));
   }
+
+
+  static Future getUOrderses(int user_d ) {
+    var url = baseUrl + "/Negocio/HistoricoPedidosCliente?id_cliente="+user_d.toString() ;
+    return http.get(Uri.parse(url));
+  }
   static Future postAddres(UAddress ? uaddress ) {
     var url = baseUrl + "/Cliente/AgregarModificarDireccion" ;
 

@@ -4,6 +4,7 @@ import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
 import 'package:tipiko_app_usr/pages/food_order_page.dart';
 import 'package:tipiko_app_usr/pages/nearest_location.dart';
 import 'package:tipiko_app_usr/views/UAdresslist.dart';
+import 'package:tipiko_app_usr/views/UOrderlist.dart';
 import 'package:tipiko_app_usr/views/homepage.dart';
 
 class BottomNavBarWidget extends StatefulWidget {
@@ -32,7 +33,13 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
         };
         if (index == 2) Navigator.push(context, ScaleRoute(page:FoodOrderPage()
         ));
-        if (index == 3) Navigator.push(context, ScaleRoute(page: FoodOrderPage()));
+        if (index == 3){if(widget.user_id==0){
+
+        }else{
+          Navigator.push(context, ScaleRoute(page: UOrderslistview(widget.user_id)));
+        }
+
+        };
 
 
 

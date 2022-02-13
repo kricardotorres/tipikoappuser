@@ -63,7 +63,7 @@ class _FoodsWidgetState extends State<FoodsWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.of(context).size.height-100,
       child: Column(
         children: <Widget>[
           PopularFoodTitle(),
@@ -131,7 +131,7 @@ class PopularFoodTiles extends StatelessWidget {
                   ),
                 ),
                 child: Container(
-                  width: 308,
+                  width: MediaQuery.of(context).size.width*.70,
                   height: 208,
                   child: Column(
                     children: <Widget>[

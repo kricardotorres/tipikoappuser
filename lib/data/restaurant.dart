@@ -1,5 +1,5 @@
 
-import 'product.dart';
+
 
 class Restaurant {
 int id_negocio;
