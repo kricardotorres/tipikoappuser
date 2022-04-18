@@ -5,12 +5,14 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
 import 'package:tipiko_app_usr/data/json_user.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tipiko_app_usr/views/homepage_2.dart';
 import 'package:tipiko_app_usr/views/logged_screen.dart';
+import 'package:tipiko_app_usr/views/sign_up.dart';
 
 import 'homepage.dart';
 
@@ -301,7 +303,7 @@ class _LoginWithRestfulApiState extends State<LoginWithRestfulApi> {
                   children: <Widget>[
                     Container(
                       child: Text(
-                        "Don't have an account? ",
+                        "No tienes una cuenta?",
                         style: TextStyle(
                           color: Color(0xFF666666),
                           fontFamily: defaultFontFamily,
@@ -312,11 +314,11 @@ class _LoginWithRestfulApiState extends State<LoginWithRestfulApi> {
                     ),
                     InkWell(
                       onTap: () => {
-                       // Navigator.push(context, ScaleRoute(page: SignUpPage()))
+                       Navigator.push(context, ScaleRoute(page: SignUpPage()))
                       },
                       child: Container(
                         child: Text(
-                          "Sign Up",
+                          "Registrate! ",
                           style: TextStyle(
                             color: Color(0xFFf7418c),
                             fontFamily: defaultFontFamily,

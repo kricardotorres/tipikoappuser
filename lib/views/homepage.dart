@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   var cliend_dir_id;
   var client_id;
   String client_direccion=" ";
-
+  late bool _testValue=false;
   Location location = Location();
   @override
   void initState() {
@@ -50,6 +50,10 @@ class _HomePageState extends State<HomePage> {
         Navigator.push(context, ScaleRoute(page: UAddresslistview(int.parse(client_id))));
       }
 
+      if (client_id  == "null") {
+        _testValue = false;
+      }else {_testValue = true;}
+      setState(() {});
     });
 
     location.onLocationChanged.listen((value) {
@@ -220,7 +224,9 @@ class _HomePageState extends State<HomePage> {
             );
           },
             onSuggestionSelected: (suggestion) {
-              Navigator.push(context, ScaleRoute(page: HomePageCategory(  (suggestion as Restaurant))));
+              _testValue?
+              Navigator.push(context, ScaleRoute(page: HomePageCategory(  (suggestion as Restaurant)))):
+              Navigator.pushReplacement(context, ScaleRoute(page: LoginWithRestfulApi() ));
 
             },
         ),
@@ -246,16 +252,18 @@ class _HomePageState extends State<HomePage> {
             hintText: "What would your like to buy?",
           ),
         )*/
+
+
       ),
-            TopMenus(categories ,_scrollController),
-            PopularFoodsWidget(productos_promotion ,_scrollController,0),
+            TopMenus(categories ,_scrollController,_testValue),
+            PopularFoodsWidget(productos_promotion ,_scrollController,0,_testValue),
 
             //FoodsWidget(productos_promotion  ),
 
           ],
         ),
       ),
-      bottomNavigationBar:  client_id==null ? null:BottomNavBarWidget(user_id: int.parse(client_id))
+      bottomNavigationBar:  client_id==("null") ? Text( ""):BottomNavBarWidget(user_id: int.parse(client_id), testValue: _testValue,)
       ,
     );
   }

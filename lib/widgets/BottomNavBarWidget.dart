@@ -6,10 +6,12 @@ import 'package:tipiko_app_usr/pages/nearest_location.dart';
 import 'package:tipiko_app_usr/views/UAdresslist.dart';
 import 'package:tipiko_app_usr/views/UOrderlist.dart';
 import 'package:tipiko_app_usr/views/homepage.dart';
+import 'package:tipiko_app_usr/views/json_restful_api.dart';
 
 class BottomNavBarWidget extends StatefulWidget {
   var user_id;
-  BottomNavBarWidget({required this.user_id   });
+  var testValue;
+  BottomNavBarWidget({required this.user_id,  required this.testValue   });
 
   @override
   _BottomNavBarWidgetState createState() => _BottomNavBarWidgetState();
@@ -26,17 +28,18 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
         //if (index == 1) {Navigator.push(context, ScaleRoute(page:  MapNearest(title: 'Ruta cercana', passed_Location : ({  "latitude": 20.96664072305195,   'longitude': -89.623675}))));};
         if (index == 1) {if(widget.user_id==0){
 
+          widget.testValue ? Navigator.push(context, ScaleRoute(page: UAddresslistview(widget.user_id))):  Navigator.push(context, ScaleRoute(page: LoginWithRestfulApi() ));
         }else{
-          Navigator.push(context, ScaleRoute(page: UAddresslistview(widget.user_id)));
+          widget.testValue ? Navigator.push(context, ScaleRoute(page: UAddresslistview(widget.user_id))):  Navigator.push(context, ScaleRoute(page: LoginWithRestfulApi() ));
         }
 
         };
-        if (index == 2) Navigator.push(context, ScaleRoute(page:FoodOrderPage()
-        ));
+        if (index == 2)  widget.testValue ? Navigator.push(context, ScaleRoute(page:FoodOrderPage())):  Navigator.push(context, ScaleRoute(page: LoginWithRestfulApi() ));
         if (index == 3){if(widget.user_id==0){
-
+          widget.testValue ? Navigator.push(context, ScaleRoute(page: UOrderslistview(widget.user_id))):  Navigator.push(context, ScaleRoute(page: LoginWithRestfulApi() ));
         }else{
-          Navigator.push(context, ScaleRoute(page: UOrderslistview(widget.user_id)));
+          widget.testValue ? Navigator.push(context, ScaleRoute(page: UOrderslistview(widget.user_id))):  Navigator.push(context, ScaleRoute(page: LoginWithRestfulApi() ));
+
         }
 
         };

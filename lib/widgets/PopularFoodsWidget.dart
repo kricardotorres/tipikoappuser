@@ -4,6 +4,7 @@ import 'package:tipiko_app_usr/animation/RotationRoute.dart';
 import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
 import 'package:tipiko_app_usr/data/product.dart';
 import 'package:tipiko_app_usr/pages/food_details_page.dart';
+import 'package:tipiko_app_usr/views/json_restful_api.dart';
 
 import '../cart_bloc.dart';
 //import 'package:tipiko_app_usr/pages/FoodDetailsPage.dart';
@@ -13,9 +14,10 @@ class PopularFoodsWidget extends StatefulWidget {
   Future<List<Product>>? products;
 
   late final ScrollController scrollController ;
+  var testValue;
   int restaurant_id;
 
-  PopularFoodsWidget( this.products, this.scrollController, this.restaurant_id );
+  PopularFoodsWidget( this.products, this.scrollController, this.restaurant_id, this.testValue );
 
 
 
@@ -56,7 +58,7 @@ class _PopularFoodsWidgetState extends State<PopularFoodsWidget> {
                   numberOfRating: "",
                   price: products[index].Precio.toString(),
                   slug: "",
-                product: products[index]
+                product: products[index], testValue: widget.testValue,
               );
 
 
@@ -109,6 +111,7 @@ class PopularFoodTiles extends StatelessWidget {
   String price;
   String slug;
   Product product;
+  var testValue;
 
   PopularFoodTiles(
       {
@@ -119,7 +122,9 @@ class PopularFoodTiles extends StatelessWidget {
        required this.price,
        required this.slug,
 
-        required this.product})
+        required this.product,
+
+        required this.testValue})
        ;
 
   @override
@@ -131,7 +136,8 @@ class PopularFoodTiles extends StatelessWidget {
         final bloc = Provider.of<Cart>(context, listen: false);
         if (bloc.itemCount>0){
         bloc.clear();}
-          Navigator.push(context, ScaleRoute(page: FoodDetailsPage( product : product, restaurant_id:   product.restaurant_id )));
+
+         testValue ?  Navigator.push(context, ScaleRoute(page: FoodDetailsPage( product : product, restaurant_id:   product.restaurant_id ))) : Navigator.pushReplacement(context, ScaleRoute(page: LoginWithRestfulApi() )) ;
       },
       child: Column(
         children: <Widget>[
@@ -326,11 +332,7 @@ class PopularFoodTitle extends StatelessWidget {
                 color: Color(0xFF3a3a3b),
                 fontWeight: FontWeight.w300),
           ),
-          Text(
-            "Ver todo",
-            style: TextStyle(
-                fontSize: 16, color: Colors.blue, fontWeight: FontWeight.w100),
-          )
+
         ],
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tipiko_app_usr/animation/ScaleRoute.dart';
 import 'package:tipiko_app_usr/data/category.dart';
 import 'package:tipiko_app_usr/views/homepage_3Cat.dart';
+import 'package:tipiko_app_usr/views/json_restful_api.dart';
 
 class TopMenus extends StatefulWidget {
 
@@ -9,7 +10,8 @@ class TopMenus extends StatefulWidget {
 
   late final ScrollController scrollController ;
 
-  TopMenus( this.categories, this.scrollController );
+  var testValue;
+  TopMenus( this.categories, this.scrollController,    this.testValue  );
 
 
 
@@ -45,7 +47,7 @@ class _TopMenusState extends State<TopMenus> {
               scrollDirection: Axis.horizontal,
               itemCount: categories.length,
               itemBuilder: (context, index) {
-                return  TopMenuTiles(id: categories[index].id ,name: categories[index].name, imageUrl: categories[index].UrlImagen, slug: "");
+                return  TopMenuTiles(id: categories[index].id ,name: categories[index].name, imageUrl: categories[index].UrlImagen, slug: "", testValue: widget.testValue,);
 
 
 
@@ -83,13 +85,16 @@ class TopMenuTiles extends StatelessWidget {
   String name;
   String imageUrl;
   String slug;
+  var testValue;
 
   TopMenuTiles(
       {
         required this.id,
        required this.name,
        required this.imageUrl,
-       required this.slug})
+       required this.slug,
+
+        required this.testValue})
         ;
 
   @override
@@ -97,8 +102,8 @@ class TopMenuTiles extends StatelessWidget {
     return GestureDetector(
       onTap: () {
 
+        testValue ?  Navigator.push(context, ScaleRoute(page: HomePageCategoryStores( id  ))):  Navigator.push(context, ScaleRoute(page: LoginWithRestfulApi() ));
 
-        Navigator.push(context, ScaleRoute(page: HomePageCategoryStores( id  )));
       },
       child: Column(
         children: <Widget>[

@@ -36,20 +36,6 @@ class MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    SharedPreferences.getInstance().then((SharedPreferences sp) {
-      sharedPreferences = sp;
-      var authenticationToken_load = sharedPreferences.get(key).toString();
-      var emailload  = sharedPreferences.get(email).toString();
-      var client_load  = sharedPreferences.get(client).toString();
-      var uuid_load  = sharedPreferences.get(uuid).toString();
-
-      currentUser = JsonUser(email: emailload , access_token : authenticationToken_load, client: client_load, uuid: uuid_load);
-      // will be null if never previously saved
-      if (authenticationToken_load  == "null") {
-        _testValue = false;
-      }else {_testValue = true;}
-      setState(() {});
-    });
 
   }
 
@@ -71,9 +57,8 @@ class MyAppState extends State<MyApp> {
 
           debugShowCheckedModeBanner: false,
           theme: ThemeData(fontFamily: 'Roboto', hintColor: Color(0xFFd0cece)),
-          home: _testValue?
-          HomePage(  ):
-          LoginWithRestfulApi(),
+          home:
+          HomePage(  )
         ));
   }
 }
